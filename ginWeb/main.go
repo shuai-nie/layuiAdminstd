@@ -46,7 +46,7 @@ func AuthRequired() gin.HandlerFunc {
 
 const (
 	ErrorReason_ServerBusy = "服务器繁忙"
-	ErrorReason_Relogin "请重新登录"
+	ErrorReason_ReLogin = "请重新登录"
 )
 
 func sayHello(c *gin.Context) {
