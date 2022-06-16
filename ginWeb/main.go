@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"net/http"
 	"time"
 )
@@ -17,6 +19,12 @@ func main() {
 	// 以上三部可以使用r := gin.Default() 一步实现
 	// 对 /benchmark路由添加两个处理函数
 	r.GET("/benchmark", MyBenchLogger(), benchEndpoint)
+
+	r.GET("/login/:username/:password", login)
+	r.GET("/verify/:token", verify)
+	r.GET("/refresh/:token", refresh)
+	r.GET("/sayHello/:token", sayHello)
+
 	// 创建路由分组
 	authorizd := r.Group("/")
 	// 使用 authRequired 中间件
