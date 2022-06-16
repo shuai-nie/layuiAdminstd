@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 )
 
+type UserController struct {}
+
 func (t *UserController) Login(c *gin.Context) {
 	data, err := ioutil.ReadAll(c.Request.Body)
 	CheckError(err)
