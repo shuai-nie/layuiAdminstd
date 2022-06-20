@@ -90,6 +90,23 @@
 				<div class="layui-logo" lay-href="">
 					<span>{{ layui.setter.name || 'layuiAdmin' }}</span>
 				</div>
+
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY_system-side-menu" lay-filter="layadmin-system-side-menu" >
+                  {{#
+                    var path = layui.router().path
+                        , dataName = layui.setter.response.dataName;
+
+                    layui.each(d[dataName], function(index, item){
+
+                  }}
+                  <li data-name="{{ item.name || '' }}" data-jump="" class="layui-nav-item ">
+                    <a href="javascript:;"  lay-tips="{{ item.title }}" lay-direction="2">
+                    <i class="layui-icon {{ item.icon }}"></i>
+                    <cite>{{ item.title }}</cite>
+                    </a>
+                  </li>
+                  {{# }); }}
+                </ul>
 			</script>
          <!-- <div class="layui-logo" lay-href="home/console.html">
             <span>layuiAdmin</span>
@@ -476,7 +493,7 @@
     base: 'layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' ,//主入口模块
-	vCache: 'modules/vCache'
+	vCache: 'modules/vCache',
   }).use('index');
   
 	layui.use(['table', 'vCache'], function(){
@@ -485,7 +502,11 @@
 		// cache.sSet('X-token', _token)
 		var token = cache.sGet('X-token');
 		console.log(token);
-		
+      // var i = a("#LAY_app_tabsheader")
+      //         , n = i.children("li")
+      var correctRouter = function(e) {
+        return /^\//.test(e) || (e = "/" + e)//, e.replace(/^(\/+)/, "/").replace(new RegExp("/" + n.entry + "$"), "/")
+      }
 	})
 
 /*
@@ -518,6 +539,7 @@
         return false;
     });
 */
+
 
   </script>
 </body>
