@@ -97,6 +97,7 @@
                         , dataName = layui.setter.response.dataName;
 
                     layui.each(d[dataName], function(index, item){
+                      var hasChildren = typeof item.list === 'object' && item.list.length > 0;
 
                   }}
                   <li data-name="{{ item.name || '' }}" data-jump="" class="layui-nav-item ">
@@ -104,6 +105,18 @@
                     <i class="layui-icon {{ item.icon }}"></i>
                     <cite>{{ item.title }}</cite>
                     </a>
+                    {{# if(hasChildren){ }}
+                      <dl class="layui-nav-child">
+                        {{# layui.each(item.list, function(index2, item2){
+                              var hasChildren2 = typeof item2.list == 'object' && item2.list.length > 0
+                              ,url2 = (item2.jump && typeof item2.jump === 'string') ? item2.jump : [item.name, item2.name, ''].join('/');
+                        }}
+                        <dd  data-name="{{ item2.name || '' }}"  data-jump="{{ item2.jump || '' }}" >
+                          <a href="javascript:;" >{{ item2.title }}</a>
+                        </dd>
+                        {{# }); }}
+                      </dl>
+                    {{# } }}
                   </li>
                   {{# }); }}
                 </ul>
