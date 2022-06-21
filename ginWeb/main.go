@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/config"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -10,6 +11,13 @@ import (
 )
 
 func main() {
+	conf, err := config.ParseBool("./config/app.json")
+	if err != nil {
+		panic("读取配置文件失败，" + err.Error())
+	}
+
+	fmt.Println("config:#v\n" , conf)
+
 	// 创建一个不包含任何中间件的engine
 	r := gin.New()
 	// 添加日志中间件
