@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"layuiAdminstd/config"
+	"layuiAdminstd/model"
 	"net/http"
 	"time"
 )
@@ -16,7 +17,7 @@ func main() {
 		panic("读取配置文件失败，" + err.Error())
 	}
 
-	fmt.Println("config:%v\n", conf)
+	fmt.Println("config:%v\n", conf.AppHost)
 
 	//fmt.Println("config:#v\n" , conf)
 
@@ -34,6 +35,13 @@ func main() {
 	r.GET("/verify/:token", verify)
 	r.GET("/refresh/:token", refresh)
 	r.GET("/sayHello/:token", sayHello)
+
+	// 链接数据库
+	model.OpenDB()
+	// 设置连接池
+	model.SetPool()
+	// 关闭数据库
+	defer model.CloseDB()
 
 	// 创建路由分组
 	authorizd := r.Group("/")
