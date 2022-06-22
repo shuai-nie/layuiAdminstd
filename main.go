@@ -2,21 +2,23 @@ package main
 
 import (
 	"fmt"
-	"github.com/astaxie/beego/config"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"layuiAdminstd/config"
 	"net/http"
 	"time"
 )
 
 func main() {
-	conf, err := config.ParseBool("./config/app.json")
+	conf, err := config.ParseConfig("./config/app.json")
 	if err != nil {
 		panic("读取配置文件失败，" + err.Error())
 	}
 
-	fmt.Println("config:#v\n" , conf)
+	fmt.Println("config:%v\n", conf)
+
+	//fmt.Println("config:#v\n" , conf)
 
 	// 创建一个不包含任何中间件的engine
 	r := gin.New()
@@ -26,7 +28,7 @@ func main() {
 	r.Use(gin.Recovery())
 	// 以上三部可以使用r := gin.Default() 一步实现
 	// 对 /benchmark路由添加两个处理函数
-	r.GET("/benchmark", MyBenchLogger(), benchEndpoint)
+	//r.GET("/benchmark", MyBenchLogger(), benchEndpoint)
 
 	r.GET("/login/:username/:password", login)
 	r.GET("/verify/:token", verify)
@@ -38,13 +40,12 @@ func main() {
 	// 使用 authRequired 中间件
 	authorizd.Use(AuthRequired())
 	{
-
-		authorizd.POST("/login", loginEndopint)
+		/*authorizd.POST("/login", loginEndopint)
 		authorizd.POST("/submit", submitEndpoint)
 		authorizd.POST("/read", readEndpoint)
 
 		testing := authorizd.Group("testing")
-		testing.GET("/analytics", anlyticsEndpoint)
+		testing.GET("/analytics", anlyticsEndpoint)*/
 
 	}
 
@@ -116,7 +117,7 @@ func verify(c *gin.Context) {
 		c.String(http.StatusNotFound, err.Error())
 		return
 	}
-	c.String(http.StatusOK, "verify,",claim.Username)
+	c.String(http.StatusOK, "verify,", claim.Username)
 }
 
 func refresh(c *gin.Context) {

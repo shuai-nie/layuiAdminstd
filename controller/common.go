@@ -77,6 +77,8 @@ func PackageRequestParams(c *gin.Context) (string, int, int) {
 	}
 	return strings.Join(res, " and "), req.PageNo, req.PageSize
 }
+
+
 // 驼峰转蛇形
 func snakeString(s string) string {
 	data := make([]byte, 0, len(s)*2)

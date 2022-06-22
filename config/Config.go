@@ -53,6 +53,7 @@ type RedisConfig struct {
 	Db       int    `json:"db"`
 }
 
+// 获取配置，外部使用 config.GetConfig() 调用
 func GetConfig() *Config {
 	return cfg
 }
