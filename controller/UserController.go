@@ -95,4 +95,3 @@ func DeleteUserInfo(c *gin.Context) {
 	})
 }
 
-//https://blog.csdn.net/qq_42067682/article/details/123089750

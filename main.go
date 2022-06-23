@@ -50,7 +50,7 @@ func main() {
 
 
 	// 创建路由分组
-	authorizd := r.Group("/")
+	authorizd := r.Group("/v1")
 	// 使用 authRequired 中间件
 	authorizd.Use(AuthRequired())
 	{
