@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"io/ioutil"
 	"layuiAdminstd/config"
 	"layuiAdminstd/model"
 	"net/http"
@@ -36,12 +38,16 @@ func main() {
 	r.GET("/refresh/:token", refresh)
 	r.GET("/sayHello/:token", sayHello)
 
+	r.GET("/", )
+
 	// 链接数据库
 	model.OpenDB()
 	// 设置连接池
 	model.SetPool()
 	// 关闭数据库
 	defer model.CloseDB()
+
+
 
 	// 创建路由分组
 	authorizd := r.Group("/")
@@ -58,6 +64,20 @@ func main() {
 	}
 
 	r.Run()
+}
+
+// 中间件
+func Middleware() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		data, err := ctx.GetRawData()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Println("data: %v\n", string(data))
+
+		ctx.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data))
+		ctx.Next()
+	}
 }
 
 func AuthRequired() gin.HandlerFunc {

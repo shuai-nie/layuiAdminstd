@@ -46,6 +46,9 @@ func FindUserDetail(c *gin.Context) {
 
 // 编辑用户
 func UpdateUserInfo(c *gin.Context) {
+	//name := c.Param("name")
+	//jwt := c.Request.Header.Get("jwt")
+	//name := c.Query("name")
 	// 查询
 	id, err := strconv.Atoi(c.PostForm("id"))
 	if err != nil {
