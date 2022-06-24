@@ -3,14 +3,20 @@ package main
 import (
 	"bytes"
 	"fmt"
+	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"layuiAdminstd/config"
 	"layuiAdminstd/model"
+	"layuiAdminstd/pkg/logger"
 	"net/http"
 	"time"
+)
+
+var (
+	Logger *logger.Logger
 )
 
 func main() {
@@ -64,6 +70,11 @@ func main() {
 	}
 
 	r.Run()
+}
+
+func setupLogger() error {
+	Logger = logger.NewLogger(&lumberjack.Lo)
+
 }
 
 // 中间件
