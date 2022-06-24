@@ -2,10 +2,12 @@ package logger
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"runtime"
+	"time"
 )
 
 type Level int8
@@ -107,4 +109,87 @@ func (l *Logger) WithCallersFrames() *Logger {
 	ll := l.clone()
 	ll.callers = callers
 	return ll
+}
+
+func (l *Logger) JSONFormat(message string) map[string]interface{} {
+	data := make(Fields, len(l.fields)+4)
+	data["level"] = l.level.String()
+	data["time"] = time.Now().Local().UnixNano()
+	data["message"] = message
+	data["callers"] = l.callers
+	if len(l.fields) > 0 {
+		for k, v := range l.fields {
+			if _, ok := data[k]; !ok {
+				data[k] = v
+			}
+		}
+	}
+	return data
+}
+
+func (l *Logger) Output (message string) {
+	body, _ := json.Marshal(l.JSONFormat(message))
+	content := string(body)
+	switch l.level {
+	case LevelDebug:
+		l.newLogger.Print(content)
+	case LevelInfo:
+		l.newLogger.Print(content)
+	case LevelWarn:
+		l.newLogger.Print(content)
+	case LevelError:
+		l.newLogger.Print(content)
+	case LevelFatal:
+		l.newLogger.Print(content)
+	case LevelPanic:
+		l.newLogger.Print(content)
+	}
+}
+
+func (l *Logger) Debug(v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(fmt.Sprint(v...))
+}
+
+func (l *Logger) Dubugf(format string, v ...interface{}) {
+	l.WithLevel(LevelDebug).Output(fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Info(v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
+}
+
+func (l *Logger) Infof(format string, v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Warn(v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
+}
+
+func (l *Logger) Warnf (format string, v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Error(v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
+}
+
+func (l *Logger) Errotf (format string, v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Fatal(v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
+}
+
+func (l *Logger) Fatalf (format string, v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
+}
+
+func (l *Logger) Panic(v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
+}
+
+func (l *Logger) Panicf (format string, v ...interface{}) {
+	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
 }
