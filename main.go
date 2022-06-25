@@ -52,8 +52,8 @@ func main() {
 	r.GET("/refresh/:token", refresh)
 	r.GET("/sayHello/:token", sayHello)
 
-	r.GET("/", )
-
+	//r.GET("/", )
+	Logger.Infof("%s ===  %s", "edit", "layui")
 	// 链接数据库
 	model.OpenDB()
 	// 设置连接池
@@ -82,7 +82,7 @@ func main() {
 
 func setupLogger() error {
 	Logger = logger.NewLogger(&lumberjack.Logger{
-		Filename: "",				// 日志文件路径
+		Filename: "./logs/app.log",				// 日志文件路径
 		MaxSize: 600,				// 每个日志文件保存的最大尺寸 单位: M
 		MaxAge: 10,					// 文件最多保存多少天
 		LocalTime: true,			// 是否压缩
