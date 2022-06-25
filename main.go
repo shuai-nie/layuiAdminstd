@@ -3,14 +3,15 @@ package main
 import (
 	"bytes"
 	"fmt"
-	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 	"io/ioutil"
 	"layuiAdminstd/config"
 	"layuiAdminstd/model"
 	"layuiAdminstd/pkg/logger"
+	"log"
 	"net/http"
 	"time"
 )
@@ -73,8 +74,13 @@ func main() {
 }
 
 func setupLogger() error {
-	Logger = logger.NewLogger(&lumberjack.Lo)
-
+	Logger = logger.NewLogger(&lumberjack.Logger{
+		Filename: "",
+		MaxSize: 600,
+		MaxAge: 10,
+		LocalTime: true,
+	}, "", log.LstdFlags).WithCaller(2)
+	return nil
 }
 
 // 中间件
