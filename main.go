@@ -20,6 +20,13 @@ var (
 	Logger *logger.Logger
 )
 
+func init(){
+	err := setupLogger()
+	if err != nil {
+		log.Fatalf("init.setLogger err :%v", err)
+	}
+}
+
 func main() {
 	conf, err := config.ParseConfig("./config/app.json")
 	if err != nil {
@@ -75,10 +82,10 @@ func main() {
 
 func setupLogger() error {
 	Logger = logger.NewLogger(&lumberjack.Logger{
-		Filename: "",
-		MaxSize: 600,
-		MaxAge: 10,
-		LocalTime: true,
+		Filename: "",				// 日志文件路径
+		MaxSize: 600,				// 每个日志文件保存的最大尺寸 单位: M
+		MaxAge: 10,					// 文件最多保存多少天
+		LocalTime: true,			// 是否压缩
 	}, "", log.LstdFlags).WithCaller(2)
 	return nil
 }
