@@ -1,5 +1,5 @@
 package app
-
+// 响应处理
 import (
 	"github.com/gin-gonic/gin"
 	"layuiAdminstd/pkg/errcode"
