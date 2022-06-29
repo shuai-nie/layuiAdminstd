@@ -6,6 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+//var (
+//	Logger *logger.Logger
+//)
+
 func InitDB() *gorm.DB {
 	dbConfig := GetConfig().Database
 	driverName := "mysql"
@@ -15,6 +19,10 @@ func InitDB() *gorm.DB {
 	username := dbConfig.User
 	password := dbConfig.Password
 	charset := dbConfig.Chartset
+	//fmt.Println("config:  ", host, port, database, username, password, charset)
+	//Logger.Infof("%s ===  %s", host, port)
+
+
 
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username,
