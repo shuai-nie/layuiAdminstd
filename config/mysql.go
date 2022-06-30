@@ -18,11 +18,10 @@ func InitDB() *gorm.DB {
 	database := dbConfig.DbName
 	username := dbConfig.User
 	password := dbConfig.Password
-	charset := dbConfig.Chartset
+	charset := dbConfig.Charset
 	//fmt.Println("config:  ", host, port, database, username, password, charset)
 	//Logger.Infof("%s ===  %s", host, port)
-
-
+	//panic(host + port + database + username + password + charset)
 
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username,

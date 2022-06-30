@@ -42,7 +42,7 @@ type DatabaseConfig struct {
 	Host     string `json:"host"`
 	Port     string `json:"port"`
 	DbName   string `json:"db_name"`
-	Chartset string `json:"chartset"`
+	Charset string `json:"charset"`
 	ShowSql  bool   `json:"show_sql"`
 }
 

@@ -56,9 +56,9 @@ func main() {
 	Logger.Infof("%s ===  %s", "edit", "layui")
 	// 链接数据库
 	model.OpenDB()
-	// 设置连接池
+	//// 设置连接池
 	model.SetPool()
-	// 关闭数据库
+	//// 关闭数据库
 	defer model.CloseDB()
 
 

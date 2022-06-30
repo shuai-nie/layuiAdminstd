@@ -5,11 +5,11 @@
   "app_hort" : "9090",
   "database" : {
     "driver": "mysql",
-    "host": "39.101.214.179",
+    "host": "127.0.0.1",
     "port" : "3306",
     "user" : "root",
-    "password" : "123456",
-    "db_name" : "demo_go",
+    "password" : "root",
+    "db_name" : "blog",
     "charset" : "utf8",
     "show_sql" : false
   },
