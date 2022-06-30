@@ -11,3 +11,7 @@
 2022/06/30 21:30:16 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 24 main.init.0"],"level":"info","message":"edit ===  layui","time":1656595816632635100}
 2022/06/30 21:31:23 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 24 main.init.0"],"level":"info","message":"edit ===  layui","time":1656595883809652500}
 2022/06/30 21:31:56 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 24 main.init.0"],"level":"info","message":"edit ===  layui","time":1656595916958857300}
+2022/06/30 21:38:47 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 25 main.init.0"],"level":"info","message":"edit ===  layui","time":1656596327350616200}
+2022/06/30 21:42:27 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 25 main.init.0"],"level":"info","message":"edit ===  layui","time":1656596547482195700}
+2022/06/30 21:43:19 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 25 main.init.0"],"level":"info","message":"edit ===  layui","time":1656596599382933800}
+2022/06/30 22:04:19 {"callers":["D:/WWW/go/src/layuiAdminstd/main.go: 25 main.init.0"],"level":"info","message":"edit ===  layui","time":1656597859808472700}

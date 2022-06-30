@@ -9,8 +9,11 @@ import (
 
 func TestMysql(c *gin.Context) {
 	db := model.GetDB()
+	// 查询单条
 	var user model.User
-	db.Table("tpsw_user").First(&user)
+	// 查询多条
+	//var users []model.User
+	db.Table("tpsw_user").Find(&user)
 	c.JSON(http.StatusOK, gin.H{
 		"data": user,
 	})

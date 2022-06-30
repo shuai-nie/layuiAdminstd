@@ -9,6 +9,7 @@ import (
 	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 	"io/ioutil"
 	"layuiAdminstd/config"
+	. "layuiAdminstd/controller"
 	"layuiAdminstd/model"
 	"layuiAdminstd/pkg/logger"
 	"log"
@@ -47,6 +48,7 @@ func main() {
 	// 对 /benchmark路由添加两个处理函数
 	//r.GET("/benchmark", MyBenchLogger(), benchEndpoint)
 
+	r.GET("/bb", TestMysql )
 	r.GET("/login/:username/:password", login)
 	r.GET("/verify/:token", verify)
 	r.GET("/refresh/:token", refresh)

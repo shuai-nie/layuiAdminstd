@@ -5,11 +5,11 @@
   "app_hort" : "9090",
   "database" : {
     "driver": "mysql",
-    "host": "127.0.0.1",
+    "host": "39.101.214.179",
     "port" : "3306",
-    "user" : "root",
-    "password" : "root",
-    "db_name" : "blog",
+    "user" : "cms.nf305.com",
+    "password" : "87wrWj3MKcLXirS2",
+    "db_name" : "cms.nf305.com",
     "charset" : "utf8",
     "show_sql" : false
   },
