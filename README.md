@@ -139,3 +139,163 @@ server {
 	}
 }
 #/***************************************************/
+main.go
+````
+func main() {
+	db := models.DB();
+	user := models.User{}
+	var userSlice []models.User
+
+	//查询id为1的用户 正序
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND `users`.`id` = 1 AND ((`users`.`id` = 1)) ORDER BY `users`.`id` ASC LIMIT 1
+	db.First(&user, 1)
+	//查询id为1的最后一位用户 逆序
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND `users`.`id` = 2 AND ((`users`.`id` = 1)) ORDER BY `users`.`id` DESC LIMIT 1
+	db.Last(&user, 1)
+
+	//Where 条件查询
+
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((name='hanyun'))
+	db.Where("name=?", "hanyun").Find(&userSlice)
+	//相等
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((name='hanyun')) ORDER BY `users`.`id` ASC LIMIT 1
+	db.Where("name=?", "hanyun").First(&user)
+
+	//不等
+	// SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((name<>'hanyun'))
+	db.Where("name<>?", "hanyun").Find(&userSlice)
+
+	//like
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((name like'%h%'))
+	db.Where("name like?", "%h%").Find(&userSlice)
+
+	//and
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((name like'%h%' and gender=1))
+	db.Where("name like? and gender=?", "%h%", 1).Find(&userSlice)
+
+	//between and
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((created_at between '2020-03-16 11:35:18' and '2020-03-17 17:40:55'))
+	db.Where("created_at between ? and ?", "2020-03-16 11:35:18", "2020-03-17 17:40:55").Find(&userSlice)
+
+	//Struct & Map
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`name` = 'hanyun'))
+	db.Where(&models.User{Name: "hanyun"}).Find(&userSlice)
+
+	//为什么？当通过结构体进行查询时，GORM将会只通过非零值字段查询，这意味着如果你的字段值为0，''， false 或者其他 零值时，将不会被用于构建查询条件
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL
+	db.Where(&models.User{Gender: 0}).Find(&userSlice)
+	// SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`Gender` = 0))
+	db.Where(map[string]interface{}{"Gender": 0}).Find(&userSlice)
+
+	// in
+	//数值的切片会被当做主键进行查询
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`id` IN (8,9)))
+	db.Where([]int{8, 9}).Find(&userSlice)
+
+	// not in
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`id` NOT IN (8,9)))
+	db.Not([]int{8, 9}).Find(&userSlice)
+
+	//or查询
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`id` IN (8,9)) OR (`users`.`Gender` = 0))
+	db.Where([]int{8, 9}).Or(map[string]interface{}{"Gender": 0}).Find(&userSlice)
+
+	//选择字段
+	//SELECT name,gender FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`id` IN (8,9)))
+	db.Select("name,gender").Where([]int{8, 9}).Find(&userSlice)
+	//SELECT name, gender FROM `users`  WHERE `users`.`deleted_at` IS NULL AND ((`users`.`id` IN (8,9)))
+	db.Select([]string{"name", "gender"}).Where([]int{8, 9}).Find(&userSlice)
+
+	//排序 order
+	//单一字段排序
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL ORDER BY name desc
+	db.Order("name desc").Find(&userSlice)
+	//多字段排序
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL ORDER BY name desc,id asc
+	db.Order("name desc,id asc").Find(&userSlice)
+
+	//数量限制
+	// SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL LIMIT 1
+	db.Limit(1).Find(&userSlice)
+	//取消数量限制
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL
+	db.Limit(1).Limit(-1).Find(&userSlice)
+
+	//偏移
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL LIMIT 1 OFFSET 2
+	db.Limit(1).Offset(2).Find(&userSlice)
+	//取消偏移
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL LIMIT 1
+	db.Limit(1).Offset(2).Offset(-1).Find(&userSlice)
+
+	//总数
+	count := 0
+	//SELECT count(*) FROM `users`  WHERE `users`.`deleted_at` IS NULL
+	db.Find(&userSlice).Count(&count)
+
+	//查询的综合运用，包含了分页
+	//SELECT * FROM `users`  WHERE `users`.`deleted_at` IS NULL LIMIT 1 OFFSET 1
+	//SELECT count(*) FROM `users`  WHERE `users`.`deleted_at` IS NULL
+	db.Offset(1).Limit(1).Find(&userSlice).Limit(-1).Offset(-1).Count(&count)
+
+	//group
+	//SELECT name FROM `users`  WHERE `users`.`deleted_at` IS NULL GROUP BY name
+	db.Select("name").Group("name").Find(&userSlice)
+	//Having
+	//SELECT count(name) c FROM `users`  WHERE `users`.`deleted_at` IS NULL GROUP BY name HAVING (c>1)
+	db.Select("count(name) c").Group("name").Having("c>?", 1).Find(&userSlice)
+}
+````
+model.go
+````
+package models
+
+import (
+	"fmt"
+	"ginLearn.com/utils"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+	"log"
+)
+
+type Model struct {
+	ID        uint `gorm:"primary_key"`
+	CreatedAt utils.JSONTime
+	UpdatedAt utils.JSONTime
+	DeletedAt *utils.JSONTime `sql:"index"`
+}
+
+var db *gorm.DB
+
+func init() {
+	setup()
+}
+
+// 获得MySQL的资源链接
+func DB() *gorm.DB {
+	return db
+}
+
+// Setup initializes the database instance
+func setup() {
+	var err error
+	db, err = gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		"root",
+		"12345678",
+		"127.0.0.1",
+		3306,
+		"gorm"))
+
+	if err != nil {
+		log.Fatalf("models.Setup err: %v", err)
+	}
+	//采用复数的表名
+	db.SingularTable(false)
+	//自动数据迁移
+	db.AutoMigrate(User{})
+	//打印日志
+	db.LogMode(true)
+	db.DB().SetMaxIdleConns(10)
+	db.DB().SetMaxOpenConns(100)
+}
+````
