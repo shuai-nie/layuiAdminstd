@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"layuiAdminstd/global"
-	"layuiAdminstd/intermal/dao"
+	"layuiAdminstd/internal/dao"
 )
 
 type Service struct {

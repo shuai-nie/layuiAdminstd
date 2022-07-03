@@ -6,39 +6,55 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
-	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 	"io/ioutil"
-	"layuiAdminstd/config"
-	. "layuiAdminstd/controller"
-	"layuiAdminstd/model"
-	"layuiAdminstd/pkg/logger"
+	"layuiAdminstd/global"
+	"layuiAdminstd/internal/routers"
+	"layuiAdminstd/pkg/setting"
 	"log"
 	"net/http"
 	"time"
 )
 
-var (
+/*var (
 	Logger *logger.Logger
-)
+)*/
 
 func init(){
-	err := setupLogger()
+/*	err := setupLogger()
 	if err != nil {
 		log.Fatalf("init.setLogger err :%v", err)
+	}*/
+
+	err := setupSetting()
+	if err != nil {
+		log.Fatalf("init.setupSetting err %v", err)
 	}
 }
 
 func main() {
-	conf, err := config.ParseConfig("./config/app.json")
+	fmt.Println(global.ServerSetting.RunMode)
+	gin.SetMode(global.ServerSetting.RunMode)
+	router := routers.NewRouter()
+	s := &http.Server{
+		Addr: ":" + global.ServerSetting.HttpPort,
+		Handler: router,
+		ReadTimeout: global.ServerSetting.ReadTimeout,
+		WriteTimeout: global.ServerSetting.WriterTimeout,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+
+
+/*	conf, err := config.ParseConfig("./config/app.json")
 	if err != nil {
 		panic("读取配置文件失败，" + err.Error())
 	}
 
-	fmt.Println("config:%v\n", conf.AppHost)
+	fmt.Println("config:%v\n", conf.AppHost)*/
 
 	//fmt.Println("config:#v\n" , conf)
 
-	// 创建一个不包含任何中间件的engine
+	/*// 创建一个不包含任何中间件的engine
 	r := gin.New()
 	// 添加日志中间件
 	r.Use(gin.Logger())
@@ -55,13 +71,13 @@ func main() {
 	r.GET("/sayHello/:token", sayHello)
 
 	//r.GET("/", )
-	Logger.Infof("%s ===  %s", "edit", "layui")
+	//Logger.Infof("%s ===  %s", "edit", "layui")
 	// 链接数据库
-	model.OpenDB()
-	//// 设置连接池
-	model.SetPool()
-	//// 关闭数据库
-	defer model.CloseDB()
+	//model.OpenDB()
+	////// 设置连接池
+	//model.SetPool()
+	////// 关闭数据库
+	//defer model.CloseDB()
 
 
 
@@ -70,25 +86,52 @@ func main() {
 	// 使用 authRequired 中间件
 	authorizd.Use(AuthRequired())
 	{
-		/*authorizd.POST("/login", loginEndopint)
-		authorizd.POST("/submit", submitEndpoint)
-		authorizd.POST("/read", readEndpoint)
-
-		testing := authorizd.Group("testing")
-		testing.GET("/analytics", anlyticsEndpoint)*/
+		//authorizd.POST("/login", loginEndopint)
+		//authorizd.POST("/submit", submitEndpoint)
+		//authorizd.POST("/read", readEndpoint)
+		//
+		//testing := authorizd.Group("testing")
+		//testing.GET("/analytics", anlyticsEndpoint)
 
 	}
 
-	r.Run()
+	r.Run()*/
 }
 
-func setupLogger() error {
+/*func setupLogger() error {
 	Logger = logger.NewLogger(&lumberjack.Logger{
 		Filename: "./logs/app.log",				// 日志文件路径
 		MaxSize: 600,				// 每个日志文件保存的最大尺寸 单位: M
 		MaxAge: 10,					// 文件最多保存多少天
 		LocalTime: true,			// 是否压缩
 	}, "", log.LstdFlags).WithCaller(2)
+	return nil
+}*/
+
+func setupSetting() error {
+	setting, err := setting.NewSetting()
+	if err != nil {
+		return err
+	}
+
+	err = setting.ReadSection("Server", &global.ServerSetting)
+	if err != nil {
+		return err
+	}
+
+	err = setting.ReadSection("App", &global.AppSetting)
+	if err != nil {
+		return err
+	}
+
+	err = setting.ReadSection("Database", &global.DatabaseSetting)
+	if err != nil {
+		return err
+	}
+
+	global.ServerSetting.ReadTimeout *= time.Second
+	global.ServerSetting.WriterTimeout *= time.Second
+
 	return nil
 }
 

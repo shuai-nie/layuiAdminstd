@@ -12,7 +12,7 @@ type Setting struct {
 func NewSetting() (*Setting, error) {
 	vp := viper.New()
 	vp.SetConfigName("config")
-	vp.AddConfigPath("config/")
+	vp.AddConfigPath("configs/")
 	vp.SetConfigType("yaml")
 	err := vp.ReadInConfig()
 	if err != nil {
@@ -23,10 +23,10 @@ func NewSetting() (*Setting, error) {
 }
 
 type ServerSettings struct {
-	RunMode string
-	HttpPort string
-	ReadTimeout time.Duration
-	WriterTimeout time.Duration
+	RunMode       string        `json:"run_mode"`
+	HttpPort      string        `json:"http_port"`
+	ReadTimeout   time.Duration `json:"read_timeout"`
+	WriterTimeout time.Duration `json:"writer_timeout"`
 }
 
 type AppSettings struct {
