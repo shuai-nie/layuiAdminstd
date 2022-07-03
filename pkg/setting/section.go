@@ -56,3 +56,19 @@ func (s *Setting) ReadSection(k string, v interface{}) error {
 	}
 	return nil
 }
+
+type JWTSettingS struct {
+	Secret string
+	Issuer string
+	Expire time.Duration
+}
+
+type EmailSettingS struct {
+	Host string
+	Port int
+	UserName string
+	Password string
+	IsSSL bool
+	Form string
+	To []string
+}
