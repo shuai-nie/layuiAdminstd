@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"layuiAdminstd/internal/routers/api"
 	v1 "layuiAdminstd/internal/routers/api/v1"
 )
 
@@ -12,6 +13,10 @@ func NewRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	admin := v1.NewAdmin()
+	upload := api.NewUpload()
+
+	// 上传文件 url
+	r.POST("/upload/file", upload.UploadFile)
 
 	apiv1 := r.Group("/api/v1")
 	{
