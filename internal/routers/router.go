@@ -1,14 +1,29 @@
 package routers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	v1 "layuiAdminstd/internal/routers/api/v1"
+)
+
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
+	admin := v1.NewAdmin()
+
 	apiv1 := r.Group("/api/v1")
 	{
+		// 创建
+		apiv1.POST("/admin", admin.Create)
+		// 删除
+		apiv1.DELETE("/admins/:id", admin.Delete)
+		// 更新
+		apiv1.PUT("/admins/", admin.Update)
+		// 获取列表
+		apiv1.GET("/admins", admin.List)
+
 		apiv1.POST("/tags")
 		apiv1.DELETE("/tags/:id")
 		apiv1.PUT("/tags/:id")
