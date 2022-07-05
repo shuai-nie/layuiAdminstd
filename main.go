@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"layuiAdminstd/global"
 	"layuiAdminstd/internal/routers"
@@ -11,9 +10,7 @@ import (
 	"time"
 )
 
-/*var (
-	Logger *logger.Logger
-)*/
+
 
 func init(){
 	err := setupSetting()
@@ -23,7 +20,6 @@ func init(){
 }
 
 func main() {
-	fmt.Println(global.ServerSetting.RunMode)
 	gin.SetMode(global.ServerSetting.RunMode)
 	router := routers.NewRouter()
 	s := &http.Server{

@@ -42,12 +42,26 @@ func (a Admin) List(db *gorm.DB, pageOffset, pageSize int) ([]*Admin, error) {
 	return admins, nil
 }
 
-func (a Admin) Create (db *gorm.DB) error {
-	return db.Create(&a).Error
+func (a Admin) Create (db *gorm.DB) (*Admin, error) {
+	if err := db.Create(&a).Error; err != nil {
+		return nil, err
+	}
+	return &a, nil
 }
 
 func (a Admin) Update(db *gorm.DB, values interface{}) error {
 	return db.Model(&a).Where("id = ? AND is_del = ?", a.ID, 0).Update(values).Error
+}
+
+func (a Admin) Get(db *gorm.DB) (Admin, error) {
+	var admin Admin
+	db = db.Where("id = ? AND is_del = ?", a.ID, a.State, 0)
+	err := db.First(&admin).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return admin, err
+	}
+	return admin, nil
+
 }
 
 func (a Admin) Delete(db *gorm.DB) error {
