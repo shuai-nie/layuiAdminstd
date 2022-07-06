@@ -8,6 +8,10 @@ type Admin struct {
 	State uint8
 }
 
+type AdminRow struct {
+	AdminID uint32
+}
+
 func (a Admin) TableName() string {
 	return "cms_admin"
 }

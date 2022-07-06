@@ -1,6 +1,9 @@
 package dao
 
-import "layuiAdminstd/internal/model"
+import (
+	"layuiAdminstd/internal/model"
+	"layuiAdminstd/pkg/app"
+)
 
 type Admin struct {
 	ID uint32
@@ -24,4 +27,15 @@ func (d *Dao) UpdateAdmin(param *Admin) error {
 func (d *Dao) GetAdmin(id uint32, state uint8) (model.Admin, error) {
 	admin := model.Admin{Model: &model.Model{ID: id}, State:state}
 	return admin.Get(d.engine)
+}
+
+//统计条数
+func (d *Dao) CountAdminList(state uint8) (int, error) {
+	admin := model.Admin{State: state}
+	return admin.Count(d.engine)
+}
+
+func (d *Dao) GetAdminList(state uint8, page, pageSize int) ([]*model.Admin, error) {
+	admin := model.Admin{State: state}
+	return admin.List(d.engine, app.GetPageOffset(page, pageSize), pageSize)
 }
