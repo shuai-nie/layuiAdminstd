@@ -1,6 +1,9 @@
 package service
 
-import "layuiAdminstd/pkg/app"
+import (
+	"layuiAdminstd/internal/dao"
+	"layuiAdminstd/pkg/app"
+)
 
 type CountAdminRequest struct {
 	State uint8
@@ -19,6 +22,23 @@ type AdminListRequest struct {
 type Admin struct {
 	ID uint32
 	// 未完成
+}
+
+type CreateAdminRequest struct {
+	Name string
+	CreateBy string
+	State uint8
+}
+
+type UpdateAdminRequest struct {
+	ID uint32
+	Name string
+	State uint8
+	ModifiedBy string
+}
+
+type DeleteAdminRequest struct {
+	ID uint32
 }
 
 func (svc *Service) GetAdmin (param *AdminRequest) (*Admin, error) {
@@ -49,19 +69,27 @@ func (svc *Service) GetAdminList(param *AdminListRequest, pager *app.Pager) ([]*
 	return adminList, adminCount, nil
 }
 
-type CreateAdminRequest struct {
-	Name string
-	CreateBy string
-	State uint8
+func (svc *Service) CreateAdmin (param *CreateAdminRequest) error {
+	_, err := svc.dao.CreateAdmin(&dao.Admin{
+		Name: param.Name,
+	})
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-type UpdateAdminRequest struct {
-	ID uint32
-	Name string
-	State uint8
-	ModifiedBy string
+func (svc *Service) UpdateAdmin (param *UpdateAdminRequest) error {
+	err := svc.dao.UpdateAdmin(&dao.Admin{
+		ID: param.ID,
+		Name: param.Name,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-type DeleteAdminRequest struct {
-	ID uint32
-}

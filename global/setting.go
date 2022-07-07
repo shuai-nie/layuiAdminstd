@@ -1,6 +1,7 @@
 package global
 
 import (
+	"layuiAdminstd/pkg/logger"
 	"layuiAdminstd/pkg/setting"
 )
 
@@ -11,6 +12,8 @@ var (
 	EmailSetting *setting.EmailSettingS
 
 	JWTSetting *setting.JWTSettingS
+
+	Logger *logger.Logger
 
 
 )

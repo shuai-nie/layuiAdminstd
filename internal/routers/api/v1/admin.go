@@ -1,10 +1,12 @@
 package v1
 
 import (
+	"blog-service/global"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"layuiAdminstd/internal/service"
 	"layuiAdminstd/pkg/app"
+	"layuiAdminstd/pkg/errcode"
 )
 
 type Admin struct {}
@@ -36,11 +38,28 @@ func (a Admin) List(c *gin.Context) {
 	pager := app.Pager{Page: app.GetPage(c), PageSize: app.GetPageSize(c)}
 	admins, totalRows, err := svc.GetAdminList(&param, &pager)
 	if err != nil {
+		global.Logger.Errorf("svc.GetAdminList err: %v", err)
+		response.ToErrorResponse(errcode.ErrorGetAdminListFail)
 		return
 	}
 	response.ToResponseList(admins, totalRows)
 	return
 }
-func (a Admin) Create(c *gin.Context) {}
+
+
+func (a Admin) Create(c *gin.Context) {
+	param := service.CreateAdminRequest{}
+	response := app.NewResponse(c)
+	svc := service.New(c.Request.Context())
+	err := svc.CreateAdmin(&param)
+	if err != nil {
+		global.Logger.Errorf( "svc.CreateAdmin err : %v", err)
+		response.ToErrorResponse(errcode.ErrorCreateAdminFail)
+		return
+	}
+}
+
 func (a Admin) Update(c *gin.Context) {}
+
 func (a Admin) Delete(c *gin.Context) {}
+

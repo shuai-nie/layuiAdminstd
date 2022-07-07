@@ -7,6 +7,12 @@ import (
 
 type Admin struct {
 	ID uint32
+	Name string
+	Password string
+	email string
+	GroupId uint32
+	Str string
+	Status uint8
 }
 
 func (d *Dao) CreateAdmin(param *Admin) (*model.Admin, error) {

@@ -65,7 +65,6 @@ func (a Admin) Get(db *gorm.DB) (Admin, error) {
 		return admin, err
 	}
 	return admin, nil
-
 }
 
 func (a Admin) Delete(db *gorm.DB) error {
