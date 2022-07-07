@@ -299,3 +299,18 @@ func setup() {
 	db.DB().SetMaxOpenConns(100)
 }
 ````
+
+
+````
+————configs：配置文件
+————global：全忽悠变量
+————internal：内部模块
+	————dao：数据访问层
+	————middleware：http中间件
+	————model：模型层，用于存放 model 对象
+	————routers：路由相关的逻辑
+	————service：项目核心业务逻辑
+————pkg：项目相关模块包
+————storage：项目生成的临时文件
+————scripts：各类构建、安装、分析等操作的脚本
+````
