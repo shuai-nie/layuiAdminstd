@@ -6,8 +6,11 @@ import (
 )
 
 type Error struct {
+	// 错误码
 	code    int      `json:"code"`
+	// 错误信息
 	msg     string   `json:"msg"`
+	// 详细信息
 	details []string `json:"details"`
 }
 
