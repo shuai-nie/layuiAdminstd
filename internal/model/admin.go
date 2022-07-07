@@ -22,7 +22,8 @@ func (a Admin) Count(db *gorm.DB) (int, error) {
 		db = db.Where("name = ?", a.Name)
 	}
 	db = db.Where("state = ?", a.State)
-	if err := db.Model(&a).Where("is_del = ?", 0).Count(&count).Error; err != nil {
+	//if err := db.Model(&a).Where("is_del = ?", 0).Count(&count).Error; err != nil {
+	if err := db.Model(&a).Count(&count).Error; err != nil {
 		return 0, err
 	}
 	return count, nil
@@ -39,8 +40,9 @@ func (a Admin) List(db *gorm.DB, pageOffset, pageSize int) ([]*Admin, error) {
 		db = db.Where("name = ?", a.Name)
 	}
 
-	db = db.Where("state = ?", a.State)
-	if err = db.Where("is_del = ?", 0).Find(&admins).Error; err != nil {
+	//db = db.Where("state = ?", a.State)
+	//if err = db.Where("is_del = ?", 0).Find(&admins).Error; err != nil {
+	if err = db.Find(&admins).Error; err != nil {
 		return nil, err
 	}
 	return admins, nil

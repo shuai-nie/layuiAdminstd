@@ -37,6 +37,9 @@ func (a Admin) List(c *gin.Context) {
 
 	svc := service.New(c.Request.Context())
 	pager := app.Pager{Page: app.GetPage(c), PageSize: app.GetPageSize(c)}
+
+	fmt.Println(pager)
+
 	admins, totalRows, err := svc.GetAdminList(&param, &pager)
 	if err != nil {
 		global.Logger.Errorf("svc.GetAdminList err: %v", err)
