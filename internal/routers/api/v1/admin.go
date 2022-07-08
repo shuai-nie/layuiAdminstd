@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"blog-service/global"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"layuiAdminstd/global"
 	"layuiAdminstd/internal/service"
 	"layuiAdminstd/pkg/app"
 	"layuiAdminstd/pkg/convert"

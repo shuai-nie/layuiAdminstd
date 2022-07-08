@@ -174,7 +174,7 @@ func (l *Logger) Error(v ...interface{}) {
 	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
 }
 
-func (l *Logger) Errotf (format string, v ...interface{}) {
+func (l *Logger) Errorf (format string, v ...interface{}) {
 	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
 }
 

@@ -1,8 +1,8 @@
 package api
 
 import (
-	"blog-service/global"
 	"github.com/gin-gonic/gin"
+	"layuiAdminstd/global"
 	"layuiAdminstd/internal/service"
 	"layuiAdminstd/pkg/app"
 	"layuiAdminstd/pkg/convert"
