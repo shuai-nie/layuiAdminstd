@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"layuiAdminstd/global"
 	"layuiAdminstd/internal/routers"
 	"layuiAdminstd/pkg/setting"
@@ -20,7 +19,6 @@ func init(){
 }
 
 func main() {
-	gin.SetMode(global.ServerSetting.RunMode)
 	router := routers.NewRouter()
 	s := &http.Server{
 		Addr: ":" + global.ServerSetting.HttpPort,
