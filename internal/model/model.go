@@ -50,9 +50,9 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettings) (*gorm.DB, error) {
 	db.SingularTable(true)
 	// 三个对应的回调已经写好并替换掉默认的钩子回调
 	// 注册 Callbacks
-	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
-	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
+	//db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	//db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	//db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	db.DB().SetMaxIdleConns(databaseSetting.MaxIdleConns)
 	db.DB().SetMaxOpenConns(databaseSetting.MaxOpenConns)
 	otgorm.AddGormCallbacks(db)
