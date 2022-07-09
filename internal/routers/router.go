@@ -36,7 +36,7 @@ func NewRouter() *gin.Engine {
 		// 获取列表
 		apiv1.GET("/admins", admin.List)
 
-		apiv1.POST("/tags")
+/*		apiv1.POST("/tags")
 		apiv1.DELETE("/tags/:id")
 		apiv1.PUT("/tags/:id")
 		apiv1.PATCH("/tags/:id/state")
@@ -47,7 +47,7 @@ func NewRouter() *gin.Engine {
 		apiv1.PUT("/articles/:id")
 		apiv1.PATCH("articles/:id/state")
 		apiv1.GET("/articles/:id")
-		apiv1.GET("/articles")
+		apiv1.GET("/articles")*/
 	}
 	return r
 }

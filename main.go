@@ -2,6 +2,7 @@ package main
 
 import (
 	"layuiAdminstd/global"
+	"layuiAdminstd/internal/model"
 	"layuiAdminstd/internal/routers"
 	"layuiAdminstd/pkg/setting"
 	"log"
@@ -15,6 +16,11 @@ func init(){
 	err := setupSetting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err %v", err)
+	}
+
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
 }
 
@@ -61,5 +67,14 @@ func setupSetting() error {
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriterTimeout *= time.Second
 
+	return nil
+}
+
+func setupDBEngine() error {
+	var err error
+	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
+	if err != nil {
+		return err
+	}
 	return nil
 }

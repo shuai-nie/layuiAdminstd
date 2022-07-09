@@ -1,6 +1,11 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import (
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+)
+
+
 
 type Admin struct {
 	*Model
@@ -21,7 +26,7 @@ func (a Admin) Count(db *gorm.DB) (int, error) {
 	if a.Name != "" {
 		db = db.Where("name = ?", a.Name)
 	}
-	db = db.Where("state = ?", a.State)
+	//db = db.Where("state = ?", a.State)
 	//if err := db.Model(&a).Where("is_del = ?", 0).Count(&count).Error; err != nil {
 	if err := db.Model(&a).Count(&count).Error; err != nil {
 		return 0, err
