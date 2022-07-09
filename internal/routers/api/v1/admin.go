@@ -30,8 +30,6 @@ func (a Admin) Get(c *gin.Context) {}
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/articles [get]
 func (a Admin) List(c *gin.Context) {
-	fmt.Print("ssssss")
-
 	param := service.AdminListRequest{}
 	response := app.NewResponse(c)
 

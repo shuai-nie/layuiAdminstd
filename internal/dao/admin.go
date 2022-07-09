@@ -30,18 +30,18 @@ func (d *Dao) UpdateAdmin(param *Admin) error {
 	return admin.Update(d.engine, values)
 }
 
-func (d *Dao) GetAdmin(id uint32, state uint8) (model.Admin, error) {
-	admin := model.Admin{Model: &model.Model{ID: id}, State:state}
+func (d *Dao) GetAdmin(id uint32, status uint8) (model.Admin, error) {
+	admin := model.Admin{Model: &model.Model{ID: id}, Status:status}
 	return admin.Get(d.engine)
 }
 
 //统计条数
-func (d *Dao) CountAdminList(state uint8) (int, error) {
-	admin := model.Admin{State: state}
+func (d *Dao) CountAdminList(status uint8) (int, error) {
+	admin := model.Admin{Status: status}
 	return admin.Count(d.engine)
 }
 
-func (d *Dao) GetAdminList(state uint8, page, pageSize int) ([]*model.Admin, error) {
-	admin := model.Admin{State: state}
+func (d *Dao) GetAdminList(status uint8, page, pageSize int) ([]*model.Admin, error) {
+	admin := model.Admin{Status: status}
 	return admin.List(d.engine, app.GetPageOffset(page, pageSize), pageSize)
 }

@@ -5,12 +5,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-
-
 type Admin struct {
 	*Model
 	Name string
-	State uint8
+	Username string
+	Email string
+	GroupId uint32
+	Str string
+	Status uint8
 }
 
 type AdminRow struct {
@@ -66,7 +68,7 @@ func (a Admin) Update(db *gorm.DB, values interface{}) error {
 
 func (a Admin) Get(db *gorm.DB) (Admin, error) {
 	var admin Admin
-	db = db.Where("id = ? AND is_del = ?", a.ID, a.State, 0)
+	db = db.Where("id = ? AND status = ?", a.ID, a.Status, 0)
 	err := db.First(&admin).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return admin, err
@@ -75,6 +77,6 @@ func (a Admin) Get(db *gorm.DB) (Admin, error) {
 }
 
 func (a Admin) Delete(db *gorm.DB) error {
-	return db.Where("id = ? AND is_del = ? ", a.Model.ID, 0).Delete(&a).Error
+	return db.Where("id = ? AND status = ? ", a.Model.ID, a.Status).Delete(&a).Error
 }
 

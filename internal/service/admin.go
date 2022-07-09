@@ -16,11 +16,17 @@ type AdminRequest struct {
 
 type AdminListRequest struct {
 	Name string
-	State uint8
+	Status uint8
 }
 
 type Admin struct {
 	ID uint32
+	Name string
+	Username string
+	Email string
+	GroupId uint32
+	str string
+	Status uint8
 	// 未完成
 }
 
@@ -53,16 +59,19 @@ func (svc *Service) GetAdmin (param *AdminRequest) (*Admin, error) {
 }
 
 func (svc *Service) GetAdminList(param *AdminListRequest, pager *app.Pager) ([]*Admin, int, error) {
-	adminCount, err := svc.dao.CountAdminList(param.State)
+	adminCount, err := svc.dao.CountAdminList(param.Status)
 	var adminList []*Admin
-	admins, err := svc.dao.GetAdminList(param.State, pager.Page, pager.PageSize)
+	admins, err := svc.dao.GetAdminList(param.Status, pager.Page, pager.PageSize)
 	if err != nil {
 		return nil, 0, err
 	}
 	for _, admin := range admins {
 		adminList = append(adminList, &Admin{
 			ID: admin.ID,
-			// 格式未完全
+			Name: admin.Name,
+			Username: admin.Username,
+			Email: admin.Email,
+			GroupId: admin.GroupId,
 		})
 	}
 
