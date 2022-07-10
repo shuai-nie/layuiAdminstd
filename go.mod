@@ -3,6 +3,7 @@ module layuiAdminstd
 go 1.18
 
 require (
+	github.com/aliyun/aliyun-oss-go-sdk v2.2.4+incompatible // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/eddycjy/opentracing-gorm v0.0.0-20200209122056-516a807d2182 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
@@ -37,6 +38,7 @@ require (
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
