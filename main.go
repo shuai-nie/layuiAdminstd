@@ -39,6 +39,7 @@ func main() {
 }
 
 func setupSetting() error {
+	// 配置文件
 	setting, err := setting.NewSetting()
 	if err != nil {
 		return err
