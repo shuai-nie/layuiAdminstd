@@ -7,32 +7,38 @@
           <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
         </a>
       </li>
-      <!--<li class="layui-nav-item layui-this layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+
+<!--      <li class="layui-nav-item layui-this layui-hide-xs layui-hide-sm layui-show-md-inline-block">-->
+      <li class="layui-nav-item layui-hide-xs layui-hide-sm layui-show-md-inline-block">
         <a lay-href="" title="">
           控制台
         </a>
-      </li>-->
-      <li class="layui-nav-item layui-hide-xs" lay-unselect>
+      </li>
+
+      <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
         <a href="http://www.layui.com/admin/" target="_blank" title="前台">
           <i class="layui-icon layui-icon-website"></i>
         </a>
-      </li>
+      </li>-->
+
       <li class="layui-nav-item" lay-unselect>
         <a href="javascript:;" layadmin-event="refresh" title="刷新">
           <i class="layui-icon layui-icon-refresh-3"></i>
         </a>
       </li>
-      <li class="layui-nav-item layui-hide-xs" lay-unselect>
-        <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search/keywords="> 
-      </li>
+
+      <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
+        <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search/keywords=">
+      </li>-->
+
     </ul>
     <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
       
-      <li class="layui-nav-item" lay-unselect>
+      <!--<li class="layui-nav-item" lay-unselect>
         <a lay-href="app/message/" layadmin-event="message">
           <i class="layui-icon layui-icon-notice"></i>
           
-          <!-- 如果有新消息，则显示小圆点 -->
+          &lt;!&ndash; 如果有新消息，则显示小圆点 &ndash;&gt;
           <script type="text/html" template lay-url="./json/message/new.js">
           {{# if(d.data.newmsg){ }} 
             <span class="layui-badge-dot"></span>
@@ -50,13 +56,18 @@
         <a href="javascript:;" layadmin-event="note">
           <i class="layui-icon layui-icon-note"></i>
         </a>
+      </li>-->
+      <li class="layui-nav-item layui-hide-xs" lay-unselect>
+        <a href="javascript:;" layadmin-event="note" id="start_date" >2022年7月11日 11:32:31</a>
       </li>
+
       <li class="layui-nav-item layui-hide-xs" lay-unselect>
         <a href="javascript:;" layadmin-event="fullscreen">
           <i class="layui-icon layui-icon-screen-full"></i>
         </a>
       </li>
-      <li class="layui-nav-item" lay-unselect>
+
+      <li class="layui-nav-item" lay-unselect style="margin-right:40px;">
         <script type="text/html" template lay-url="./json/user/session.js" 
         lay-done="layui.element.render('nav', 'layadmin-layout-right');">
           <a href="javascript:;">
@@ -71,12 +82,12 @@
         </script>
       </li>
       
-      <li class="layui-nav-item layui-hide-xs" lay-unselect>
+      <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
         <a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
       </li>
       <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
         <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
-      </li>
+      </li>-->
     </ul>
   </div>
   
@@ -197,3 +208,31 @@
   <div class="layadmin-body-shade" layadmin-event="shade"></div>
   
 </div>
+
+<script type="application/javascript">
+  start()
+
+  function start() {
+    var today = new Date()
+
+    var y = today.getFullYear()
+            ,month = today.getMonth() + 1
+            ,day = today.getDate()
+            ,h = today.getHours()
+            ,m = today.getMinutes()
+            ,s = today.getSeconds()
+            ,week = today.getDay()
+            ,weekArr = [ "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" ];
+    m = checkTime(m)
+    s = checkTime(s)
+    document.getElementById("start_date").innerHTML = y + "-" + month + "-" + day +" "+ h + ":" + m + ":" + s + " " + weekArr[week];
+    setTimeout("start()", 500)
+  }
+
+  function checkTime(time) {
+    if (time < 10) {
+      time = "0" +time
+    }
+    return time
+  }
+</script>
