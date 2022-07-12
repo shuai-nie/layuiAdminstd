@@ -244,6 +244,21 @@ func main() {
 	//Having
 	//SELECT count(name) c FROM `users`  WHERE `users`.`deleted_at` IS NULL GROUP BY name HAVING (c>1)
 	db.Select("count(name) c").Group("name").Having("c>?", 1).Find(&userSlice)
+	
+	var res  []*Result
+	db.Table("student").Select("student.name,student.class_id,student.sex,student.score,class.class_name").
+		Joins("left join class on class.class_id = student.class_id").Scan(&res)
+	fmt.Println(*res[0])
+
+	res := &[]Result{}
+	db.Table("student").Select("student.name,student.class_id,student.sex,student.score,class.class_name").
+		Joins("left join class on class.class_id = student.class_id").Scan(res)
+	fmt.Println(*res)
+	
+	db.Table("student").Select("student.name,student.class_id,student.sex,student.score,class.class_name").
+		Joins("left join class on class.class_id = student.class_id").Where("student.class_id = ?",1).Scan(res)
+
+	
 }
 ````
 model.go
