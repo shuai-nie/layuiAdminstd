@@ -5,8 +5,11 @@
   "title": "权限管理"
   ,"icon": "layui-icon-home"
   ,"list": [{
-    "title": "角色管理"
+    "title": "角色列表"
     ,"jump": "/auth/group"
+  },{
+    "title": "节点列表"
+    ,"jump": "/menu/index"
   }]
   },{
     "title": "主页1"
