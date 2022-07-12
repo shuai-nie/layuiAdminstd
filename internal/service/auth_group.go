@@ -30,6 +30,9 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 		adminList = append(adminList, &AuthGroup{
 			Id: admin.ID,
 			Title: admin.Title,
+			Module: admin.Module,
+			Description: admin.Description,
+			Type: admin.Type,
 		})
 	}
 

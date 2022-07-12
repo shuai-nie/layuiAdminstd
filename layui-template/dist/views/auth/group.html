@@ -73,12 +73,14 @@
         //全部消息
         table.render({
             elem: '#LAY-app-message-all'
-            ,url: './json/message/all.js' //模拟接口
+            ,url: '/api/v1/auth/group' //模拟接口
             ,page: true
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                ,{field: 'title', title: '标题内容', width: 300}
-                ,{field: 'time', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.time) }}</div>'}
+                ,{field: 'Module', title: '模块', width: 100}
+                ,{field: 'Type', title: '类型', width: 100}
+                ,{field: 'Title', title: '标题内容', width: 100}
+                ,{field: 'Description', title: '描述', width: 120}
                 ,{fixed: 'right', title: '操作', width: 150, align:'center', toolbar: '#barDemo'}
             ]]
             // ,skin: 'line'

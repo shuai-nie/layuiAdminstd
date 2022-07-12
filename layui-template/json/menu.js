@@ -2,14 +2,21 @@
   "code": 0
   ,"msg": ""
   ,"data": [{
-    "title": "主页"
+  "title": "权限管理"
+  ,"icon": "layui-icon-home"
+  ,"list": [{
+    "title": "角色管理"
+    ,"jump": "/auth/group"
+  }]
+  },{
+    "title": "主页1"
     ,"icon": "layui-icon-home"
     ,"list": [{
-      "title": "控制台"
+      "title": "控制台3"
       ,"jump": "/"
     }, {
       "name": "homepage1"
-      ,"title": "主页一"
+      ,"title": "主页一4"
       ,"jump": "home/homepage1"
     }, {
       "name": "homepage2"
