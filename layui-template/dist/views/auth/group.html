@@ -20,12 +20,7 @@
             <div class="layui-tab-content">
 
                 <div class="layui-tab-item layui-show">
-                    <div class="LAY-app-message-btns" style="margin-bottom: 10px;">
-                        <button class="layui-btn layui-btn-sm" data-type="all" data-events="add">新建</button>
-                        <button class="layui-btn layui-btn-danger layui-btn-sm" data-type="all" data-events="del">删除</button>
-                    </div>
-
-                    <table id="LAY-app-message-all" lay-filter="LAY-app-message-all"></table>
+                    <table id="LAY-app-message-all" class="layui-hide" lay-filter="LAY-app-message-all"></table>
 
                 </div>
 
@@ -36,19 +31,29 @@
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
             </script>
 
+            <script type="text/html" id="toolbarDemo">
+                <div class="layui-inline layui-border-primary" lay-event="add"><i class="layui-icon layui-icon-add-1"></i></div>
+                <div class="layui-inline layui-border-orange" lay-event="update"><i class="layui-icon layui-icon-edit"></i></div>
+                <div class="layui-inline layui-border-red" lay-event="delete"><i class="layui-icon layui-icon-delete"></i></div>
+            </script>
+
+
+
         </div>
     </div>
 </div>
 
 <script>
-    layui.use(['admin', 'table', 'util'], function(){
+    layui.use(function(){
         var $ = layui.$
             ,admin = layui.admin
             ,table = layui.table
-            ,element = layui.element;
+            ,view = layui.view
+            ,form = layui.form
+            ,element = layui.element
+            , _area = ['750px', '600px'];
 
         var DISABLED = 'layui-btn-disabled'
-
             //区分各选项卡中的表格
             ,tabs = {
                 all: {
@@ -70,13 +75,12 @@
             return '<a lay-href="app/message/detail/id='+ d.id +'">'+ d.title;
         };
 
-        //全部消息
-        table.render({
+        var tableIndex = table.render({
             elem: '#LAY-app-message-all'
-            ,url: '/api/v1/auth/group' //模拟接口
-            ,page: true
-            // , width: '630'
-            ,cols: [[
+            ,url: '/api/v1/auth/group'
+            , title: '用户表'
+            , page: true
+            , cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'Module', title: '模块', width: 100}
                 ,{field: 'Type', title: '类型', width: 100}
@@ -84,33 +88,9 @@
                 ,{field: 'Description', title: '描述', width: 270}
                 ,{fixed: 'right', title: '操作', width: 150, align:'center', toolbar: '#barDemo'}
             ]]
+            , toolbar: '#toolbarDemo'
+            , defaultToolbar: ['filter', 'print', 'exports']
             // ,skin: 'line'
-        });
-
-        //通知
-        table.render({
-            elem: '#LAY-app-message-notice'
-            ,url: './json/message/notice.js' //模拟接口
-            ,page: true
-            ,cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'title', title: '标题内容', minWidth: 300, templet: tplTitle}
-                ,{field: 'time', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.time) }}</div>'}
-            ]]
-            ,skin: 'line'
-        });
-
-        //私信
-        table.render({
-            elem: '#LAY-app-message-direct'
-            ,url: './json/message/direct.js' //模拟接口
-            ,page: true
-            ,cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'title', title: '标题内容', minWidth: 300, templet: tplTitle}
-                ,{field: 'time', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.time) }}</div>'}
-            ]]
-            ,skin: 'line'
         });
 
         //事件处理
@@ -134,27 +114,6 @@
                     table.reload(thisTabs.id); //刷新表格
                 });
             }
-            ,ready: function(othis, type){
-                var thisTabs = tabs[type]
-                    ,checkStatus = table.checkStatus(thisTabs.id)
-                    ,data = checkStatus.data; //获得选中的数据
-                if(data.length === 0) return layer.msg('未选中行');
-
-                //此处只是演示
-                layer.msg('标记已读成功', {
-                    icon: 1
-                });
-                table.reload(thisTabs.id); //刷新表格
-            }
-            ,readyAll: function(othis, type){
-                var thisTabs = tabs[type];
-
-                //do somethin
-
-                layer.msg(thisTabs.text + '：全部已读', {
-                    icon: 1
-                });
-            }
         };
 
         $('.LAY-app-message-btns .layui-btn').on('click', function(){
@@ -163,6 +122,102 @@
                 ,type = othis.data('type');
             events[thisEvent] && events[thisEvent].call(this, othis, type);
         });
+
+        table.on('toolbar(LAY-app-message-all)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'add':
+                    admin.popup({
+                        title: '添加用户组'
+                        ,area: ['500px', '450px']
+                        ,id: 'LAY-popup-user-add'
+                        ,success: function(layero, index){
+                            view(this.id).render('auth/group/add').done(function(){
+                                form.render(null, 'layuiadmin-form-useradmin');
+
+                                //监听提交
+                                form.on('submit(LAY-user-front-submit)', function(data){
+                                    var field = data.field; //获取提交的字段
+
+                                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                    //$.ajax({});
+                                    layui.table.reload('LAY-user-manage'); //重载表格
+                                    layer.close(index); //执行关闭
+                                });
+                            });
+                        }
+                    });
+
+                    break;
+                case 'delete':
+                    layer.msg('删除');
+                    layer.confirm("确定删除此条评论？", function(index) {
+                        obj.del(),
+                        layer.close(index)
+                    })
+                    break;
+                case 'update':
+                    admin.popup({
+                        title: '添加用户组'
+                        ,area: _area
+                        ,id: 'LAY-popup-user-add'
+                        ,success: function(layero, index){
+                            view(this.id).render('auth/group/add').done(function(){
+                                form.render(null, 'layuiadmin-form-useradmin');
+
+                                //监听提交
+                                form.on('submit(LAY-user-front-submit)', function(data){
+                                    var field = data.field; //获取提交的字段
+
+                                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                    //$.ajax({});
+                                    layui.table.reload('LAY-user-manage');
+                                    layer.close(index); //执行关闭
+                                });
+                            });
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+        })
+
+        table.on('tool(LAY-app-message-all)', function(obj){
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            if(layEvent === 'del'){
+                layer.confirm('确定删除吗？', function(index){
+                    obj.del();
+                    layer.close(index);
+
+                    // 向服务端发送删除请求，执行完毕后，可通过 reloadData 方法完成数据重载
+                    /*
+                    table.reloadData(id, {
+                      scrollPos: 'fixed'  // 保持滚动条位置不变 - v2.7.3 新增
+                    });
+                    */
+                });
+            }else if(layEvent === 'edit'){
+                admin.popup({
+                    title: "编辑分类",
+                    area: _area,
+                    id: "LAY-popup-content-tags",
+                    success: function(layero, index){
+                        view(this.id).render("auth/group/edit", table).done(function() {
+                            form.render(null, "layuiadmin-form-tags"),
+                            form.on("submit(layuiadmin-app-tags-submit)", function(data) {
+                                data.field;
+                                layui.table.reload("LAY-app-content-tags")
+                                layer.close(index)
+                            })
+                        })
+                    }
+                })
+            }
+
+        })
 
     });
 </script>
