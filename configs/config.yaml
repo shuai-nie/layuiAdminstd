@@ -10,11 +10,11 @@ App:
   LogFileExt: .log
 Database:
   DBType: mysql
-  Username: root
-  Password: root
-  Host: 127.0.0.1:3306
-  DBName: blog_service
-  TablePrefix: blog_
+  Username: cms.nf305.com
+  Password: 87wrWj3MKcLXirS2
+  Host: 39.101.214.179:3306
+  DBName: cms.nf305.com
+  TablePrefix: dp_
   Charset: utf8
   MaxIdleConns: 10
   MaxOpenConns: 30
