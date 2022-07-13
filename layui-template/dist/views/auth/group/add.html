@@ -68,8 +68,10 @@ layui.use(['admin', 'form', 'upload'], function(){
     upload.render({
         elem: '#layuiadmin-upload'
         ,url: '/api/upload/file'
-        ,accept: 'images'
-        ,method: 'get'
+        ,accept: 'file'
+        , field: 'file'
+        ,method: 'post'
+        ,headers:{}
         ,acceptMime: 'image/*'
         ,done: function(res){
             //$(this.item).prev("div").children("input").val(res.data.src)
