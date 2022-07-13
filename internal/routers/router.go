@@ -24,7 +24,7 @@ func NewRouter() *gin.Engine {
 	upload := api.NewUpload()
 
 	// 上传文件 url
-	r.POST("/upload/file", upload.UploadFile)
+	r.POST("/api/upload/file", upload.UploadFile)
 
 	apiv1 := r.Group("/api/v1")
 	{
