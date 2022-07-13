@@ -36,7 +36,7 @@
                 <input type="text" name="avatar" value="{{ d.params.avatar || '' }}" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input" >
             </script>
         </div>
-        <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button>
+        <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload">上传图片</button>
     </div>
 
     <div class="layui-form-item" lay-filter="sex">
@@ -66,13 +66,13 @@ layui.use(['admin', 'form', 'upload'], function(){
 
     //上传头像
     upload.render({
-        elem: '#layuiadmin-upload-useradmin'
-        ,url: './json/upload/demo.js'
+        elem: '#layuiadmin-upload'
+        ,url: '/api/upload/file'
         ,accept: 'images'
         ,method: 'get'
         ,acceptMime: 'image/*'
         ,done: function(res){
-            $(this.item).prev("div").children("input").val(res.data.src)
+            //$(this.item).prev("div").children("input").val(res.data.src)
         }
     });
 
