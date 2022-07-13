@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"layuiAdminstd/global"
 	"layuiAdminstd/internal/service"
@@ -23,6 +24,9 @@ func (u Upload) UploadFile(c *gin.Context) {
 		response.ToErrorResponse(errcode.InvalidParams.WithDetails(err.Error()))
 		return
 	}
+	fmt.Println("================")
+	fmt.Println(file)
+	fmt.Println("================")
 
 	fileType := convert.StrTo(c.PostForm("type")).MustInt()
 	if fileHeader == nil || fileType <= 0 {

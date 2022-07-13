@@ -8,13 +8,20 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
+  UploadSavePath: storage/uploads
+  UploadServerUrl: http://127.0.0.1:8000/static
+  UploadImageMaxSize: 5  # MB
+  UploadImageAllowExts:
+    - .jpg
+    - .jpeg
+    - .png
 Database:
   DBType: mysql
-  Username: cms.nf305.com
-  Password: 87wrWj3MKcLXirS2
-  Host: 39.101.214.179:3306
-  DBName: cms.nf305.com
-  TablePrefix: dp_
+  Username: tianyuan
+  Password: Tianyuan!@#$
+  Host: 47.111.218.163:3306
+  DBName: jusha
+  TablePrefix: jm_
   Charset: utf8
   MaxIdleConns: 10
   MaxOpenConns: 30

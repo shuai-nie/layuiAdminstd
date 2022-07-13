@@ -103,7 +103,7 @@
   <!-- 侧边菜单 -->
   <div class="layui-side layui-side-menu">
     <div class="layui-side-scroll">
-      <script type="text/html" template lay-url="./json/menu.js?v={{ layui.admin.v }}" lay-done="layui.element.render('nav', 'layadmin-system-side-menu');" id="TPL_layout">
+      <script type="text/html" template lay-url="./json/menu.json?v={{ layui.admin.v }}" lay-done="layui.element.render('nav', 'layadmin-system-side-menu');" id="TPL_layout">
       
         <div class="layui-logo" lay-href="">
           <span>{{ layui.setter.name || 'layuiAdmin' }}</span>
@@ -128,7 +128,7 @@
             ,url = (item.jump && typeof item.jump === 'string') ? item.jump : item.name;
         }}
           <li data-name="{{ item.name || '' }}" data-jump="{{ item.jump || '' }}" class="layui-nav-item {{ classSelected() }}">
-            <a href="javascript:;" {{ hasChildren ? '' : 'lay-href="'+ url +'"' }} lay-tips="{{ item.title }}" lay-direction="2">
+            <a href="javascript:;" 11 {{ hasChildren ? '' : 'lay-href='+ url }} lay-tips="{{ item.title }}" lay-direction="2">
               <i class="layui-icon {{ item.icon }}"></i>
               <cite>{{ item.title }}</cite>
             </a>
@@ -150,7 +150,7 @@
               }}
                 <dd  data-name="{{ item2.name || '' }}"  data-jump="{{ item2.jump || '' }}" 
                 {{ classSelected2() ? ('class="'+ classSelected2() +'"') : '' }}>
-                  <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href="'+ url2 +'"' }}>{{ item2.title }}</a>
+                  <a href="javascript:;" {{ hasChildren2 ? '' : 'lay-href='+ url2 +'' }}>{{ item2.title }}</a>
                   {{# if(hasChildren2){ }}
                     <dl class="layui-nav-child">
                       {{# layui.each(item2.list, function(index3, item3){ 
