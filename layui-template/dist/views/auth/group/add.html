@@ -67,13 +67,14 @@ layui.use(['admin', 'form', 'upload'], function(){
     //上传头像
     upload.render({
         elem: '#layuiadmin-upload'
-        ,url: '/api/upload/file'
-        ,accept: 'file'
+        , url: '/api/upload/file'
+        , accept: 'images'
         , field: 'file'
-        ,method: 'post'
-        ,headers:{}
-        ,acceptMime: 'image/*'
-        ,done: function(res){
+        , method: 'post'
+        , headers:{}
+        , data: {type:1}
+        , acceptMime: 'image/*'
+        , done: function(res){
             //$(this.item).prev("div").children("input").val(res.data.src)
         }
     });
