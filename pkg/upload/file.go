@@ -39,7 +39,7 @@ func CheckSavePath(dst string) bool {
 }
 
 // 检查文件后缀是否包含在约定的后缀配置中
-func CheckContaionExt(t FileType, name string) bool {
+func CheckContainExt(t FileType, name string) bool {
 	ext := GetFileExt(name)
 	switch t {
 	case TypeImage:
