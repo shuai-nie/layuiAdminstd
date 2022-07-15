@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 )
 
 type FileType int
@@ -29,7 +30,11 @@ func GetFileExt(name string) string {
 
 // 上传文件的最终保存目录
 func GetSavePath() string {
-	return "storage/uploads"
+	return global.AppSetting.UploadSavePath + "/" +ymd()
+}
+
+func ymd() string {
+	return  time.Now().Format("2006-01-02")
 }
 
 // 检查保存目录是否存在
