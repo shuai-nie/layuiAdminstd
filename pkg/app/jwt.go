@@ -8,8 +8,8 @@ import (
 )
 
 type Claims struct {
-	AppKey string
-	AppSecret string
+	AppKey string `json:"app_key"`
+	AppSecret string `json:"app_secret"`
 	jwt.StandardClaims
 }
 
@@ -41,6 +41,10 @@ func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error ) {
 		return GetJWTSecret(), nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
 
 	if tokenClaims != nil {
 		// valid 验证基于时间的声明
