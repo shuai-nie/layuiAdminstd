@@ -1,7 +1,9 @@
 package app
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"layuiAdminstd/global"
 	"layuiAdminstd/pkg/util"
 	"time"
@@ -53,4 +55,35 @@ func ParseToken(token string) (*Claims, error) {
 		}
 	}
 	return nil, err
+}
+
+
+func test(c *gin.Context) {
+	// 加密
+	mySigningKey := []byte("    ")
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"name":"",
+		"id":"",
+		"exp":time.Now().Unix()+5,
+		"iss":"sywdebug",
+	})
+	fmt.Println(token)
+
+	tokenString, err := token.SignedString(mySigningKey)
+	if err != nil {
+		return
+	}
+
+	fmt.Println("加密后的token 字符串", tokenString)
+
+	// 解密
+	token, err = jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+		return mySigningKey, nil
+	})
+	if err != nil {
+		return
+	}
+	fmt.Println("token:", token)
+	fmt.Println("token.Claims:", token.Claims)
+	fmt.Println(token.Claims.(jwt.MapClaims)["name"])
 }
