@@ -19,7 +19,7 @@ Database:
   DBType: mysql
   Username: tianyuan
   Password: Tianyuan!@#$
-  Host: 47.111.218.163:3306
+  Host: 127.0.0.1
   DBName: jusha
   TablePrefix: jm_
   Charset: utf8
