@@ -7,12 +7,12 @@ import (
 
 type AuthGroup struct {
 	ID uint32
-	Name string
-	Password string
-	email string
-	GroupId uint32
-	Str string
-	Status uint8
+	Module string
+	Type uint8
+	Title string
+	Description string
+	Status uint32
+	Rules string
 }
 
 func (d *Dao) CreateAuthGroup(param *AuthGroup) (*model.AuthGroup, error) {
