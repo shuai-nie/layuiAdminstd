@@ -1,6 +1,9 @@
 package service
 
-import "layuiAdminstd/pkg/app"
+import (
+	"layuiAdminstd/internal/dao"
+	"layuiAdminstd/pkg/app"
+)
 
 type AuthGroupListRequest struct {
 	Module string
@@ -8,6 +11,15 @@ type AuthGroupListRequest struct {
 	Title string
 	Description string
 	Status uint8
+}
+
+type CreateAuthGroupRequest struct {
+	Module string
+	Type uint8
+	Title string
+	Description string
+	Status uint32
+	Rules string
 }
 
 type AuthGroup struct {
@@ -37,4 +49,16 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 	}
 
 	return adminList, adminCount, nil
+}
+
+func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
+	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
+		Module: param.Module,
+		Type: param.Type,
+	})
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
