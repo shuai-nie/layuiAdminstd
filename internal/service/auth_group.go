@@ -15,12 +15,12 @@ type AuthGroupListRequest struct {
 }
 
 type CreateAuthGroupRequest struct {
-	Module string
-	Type uint8
-	Title string
-	Description string
-	Status uint32
-	Rules string
+	Module      string `form:"module"`
+	Type        uint8  `form:"type"`
+	Title       string `form:"title"`
+	Description string `form:"description"`
+	Status      uint32 `form:"status"`
+	Rules       string `form:"rules"`
 }
 
 type AuthGroup struct {
@@ -58,6 +58,10 @@ func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
 	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
 		Module: param.Module,
 		Type: param.Type,
+		Title: param.Title,
+		Description: param.Description,
+		Status: param.Status,
+		Rules: param.Rules,
 	})
 
 	if err != nil {

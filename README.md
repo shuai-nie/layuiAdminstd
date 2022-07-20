@@ -117,27 +117,23 @@ https://laravelacademy.org/post/21877
 https://cba.github.io/layuiAdmin-doc/#login-auth
 
 #/***************************************************/
+```
 server {
 	listen       80;
 	server_name  layui-adminstd-html.nf;
 	location / {
-		index  index.html index.htm index.php;
+		index  index.html index.htm ;
 		root   "D:/WWW/github.com/layuiAdminstd/layui-template";
-
-		#try_files $uri $uri/ /index.php$is_args$args;
-		if (!-e $request_filename){
-			rewrite ^/(.*)$ /index.php?s=$1;
-		}
-		#autoindex  on;
 	}
 	location /api {
-		 proxy_pass                 http://localhost:8080;
+		 proxy_pass                 http://localhost:8000;
             proxy_redirect             off;
             proxy_set_header           Host             $host;
             proxy_set_header           X-Real-IP        $remote_addr;
             proxy_set_header           X-Forwarded-For  $proxy_add_x_forwarded_for;
 	}
 }
+```
 #/***************************************************/
 main.go
 ````
