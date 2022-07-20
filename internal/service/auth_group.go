@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"layuiAdminstd/internal/dao"
 	"layuiAdminstd/pkg/app"
 )
@@ -52,6 +53,8 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 }
 
 func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
+	fmt.Println( param.Module)
+	fmt.Println( param)
 	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
 		Module: param.Module,
 		Type: param.Type,
