@@ -39,12 +39,16 @@ func (a AuthGroup) List(c *gin.Context) {
 func (a AuthGroup) Create (c *gin.Context) {
 	param := service.CreateAuthGroupRequest{}
 	response := app.NewResponse(c)
+	//  c.Request
 	svc := service.New(c.Request.Context())
 	err := svc.CreateAuthGroup(&param)
 	if err != nil {
 		return
 	}
 
-	response.ToResponse(gin.H{})
+	response.ToResponse(gin.H{
+		"code" : 0,
+		"message": "成功",
+	})
 	return
 }

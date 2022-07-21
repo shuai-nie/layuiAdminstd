@@ -24,12 +24,12 @@ type CreateAuthGroupRequest struct {
 }
 
 type AuthGroup struct {
-	Id uint32
-	Module string
-	Type uint8
-	Title string
-	Description string
-	Status uint8
+	Id          uint32 `form:"id"`
+	Module      string `form:"module"`
+	Type        uint8  `form:"type"`
+	Title       string `form:"title"`
+	Description string `form:"description"`
+	Status      uint8  `form:"status"`
 }
 
 func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pager) ([]*AuthGroup, int, error) {
@@ -53,8 +53,8 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 }
 
 func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
-	fmt.Println( param.Module)
 	fmt.Println( param)
+	fmt.Println( svc)
 	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
 		Module: param.Module,
 		Type: param.Type,

@@ -18,12 +18,6 @@ const (
 
 type Model struct {
 	ID uint32
-	CreatedBy string
-	ModifiedBy string
-	CreatedOn uint32
-	ModifiedOn uint32
-	DeletedOn uint32
-	IsDel uint8
 }
 
 // 初始化数据库链接
@@ -41,8 +35,6 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettings) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Sprintf("11111111111111111111111111111111111111111")
 
 	if global.ServerSetting.RunMode == "debug" {
 		db.LogMode(true)
