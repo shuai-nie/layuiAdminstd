@@ -53,7 +53,8 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 }
 
 func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
-	fmt.Println( param)
+	fmt.Println( param.Module)
+	fmt.Println("==========3==========")
 	fmt.Println( svc)
 	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
 		Module: param.Module,
