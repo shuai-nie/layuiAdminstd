@@ -32,6 +32,7 @@ func (v ValidErrors) Errors() []string {
 
 func BindAndValid (c *gin.Context, v interface{}) (bool, ValidErrors) {
 	var errs ValidErrors
+	//ShouldBind能够基于请求的不同，自动提取JSON、form表单和QueryString类型的数据，并把值绑定到指定的结构体对象
 	err := c.ShouldBind(v)
 	if err != nil {
 		v := c.Value("trans")

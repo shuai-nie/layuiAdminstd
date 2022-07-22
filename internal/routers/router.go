@@ -41,6 +41,7 @@ func NewRouter() *gin.Engine {
 		// 权限角色列表
 		apiv1.GET("/auth/group", AuthGroup.List)
 		apiv1.POST("/auth/group/create", AuthGroup.Create)
+		apiv1.GET("/auth/group/:id", AuthGroup.Get)
 
 /*		apiv1.POST("/tags")
 		apiv1.DELETE("/tags/:id")

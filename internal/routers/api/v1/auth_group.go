@@ -16,7 +16,26 @@ func NewAuthGroup() AuthGroup {
 	return AuthGroup{}
 }
 
-func (a AuthGroup) Get(c *gin.Context) {}
+func (a AuthGroup) Get(c *gin.Context) {
+	param := service.AuthGroupRequest{Id: convert.StrTo(c.Param("id")).MustUInt32()}
+	response := app.NewResponse(c)
+	valid, errs := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	svc := service.New(c.Request.Context())
+	auth, err := svc.GetAuthGroup(&param)
+	if err != nil {
+		global.Logger.Errorf("svc.GetAuthGroup err: %v", err)
+		response.ToErrorResponse(errcode.ErrorGetAuthGroupRequestFail)
+		return
+	}
+	response.ToResponse(auth)
+	return
+}
 
 func (a AuthGroup) List(c *gin.Context) {
 	param := service.AuthGroupListRequest{}
@@ -30,7 +49,7 @@ func (a AuthGroup) List(c *gin.Context) {
 	admins, totalRows, err := svc.GetAuthGroupList(&param, &pager)
 	if err != nil {
 		global.Logger.Errorf("svc.GetAdminList err: %v", err)
-		response.ToErrorResponse(errcode.ErrorGetAdminListFail)
+		response.ToErrorResponse(errcode.ErrorGetAuthGroupRequestFail)
 		return
 	}
 	response.ToResponseList(admins, totalRows)
@@ -51,7 +70,7 @@ func (a AuthGroup) Create (c *gin.Context) {
 	err := svc.CreateAuthGroup(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.createAuthGroup err %v", err)
-		response.ToErrorResponse(errcode.ErrorCreateAuthGroupFail)
+		response.ToErrorResponse(errcode.ErrorCreateAuthGroupRequestFail)
 		return
 	}
 
@@ -78,7 +97,7 @@ func (a AuthGroup) Update (c *gin.Context) {
 	err := svc.UpdateAuthGroup(&param)
 	if err != nil {
 		global.Logger.Errorf(" svc.UpdateAuthor err: %v", err)
-		response.ToErrorResponse(errcode.ErrorUpdateAuthGroupRequestFaill)
+		response.ToErrorResponse(errcode.ErrorUpdateAuthGroupRequestFail)
 		return
 	}
 

@@ -41,6 +41,29 @@ type AuthGroup struct {
 	Status      uint8  `form:"status"`
 }
 
+type AuthGroupRequest struct {
+	Id          uint32 `form:"id"`
+	Module      string `form:"module"`
+	Type        uint8  `form:"type"`
+	Title       string `form:"title"`
+	Description string `form:"description"`
+	Status      uint8  `form:"status"`
+}
+
+func (svc *Service) GetAuthGroup(param *AuthGroupRequest) (*AuthGroup, error) {
+	authgroup, err := svc.dao.GetAuthGroup(param.Id, param.Status)
+	if err != nil {
+		return nil, err
+	}
+	return &AuthGroup{
+		Id: authgroup.ID,
+		Module: authgroup.Module,
+		Title: authgroup.Title,
+		Description: authgroup.Description,
+		Status: authgroup.Status,
+	}, nil
+}
+
 func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pager) ([]*AuthGroup, int, error) {
 	adminCount, err := svc.dao.CountAdminList(param.Status)
 	var adminList []*AuthGroup

@@ -9,8 +9,9 @@ var(
 
 	ErrorUploadFileFail = NewError(20030001, "上传文件失败")
 
-	ErrorCreateAuthGroupFail = NewError(20040001, "新建失败")
-	ErrorUpdateAuthGroupRequestFaill = NewError(20040002, "编辑失败")
+	ErrorCreateAuthGroupRequestFail = NewError(20040001, "新建失败")
+	ErrorUpdateAuthGroupRequestFail = NewError(20040002, "编辑失败")
+	ErrorGetAuthGroupRequestFail = NewError(20040003, "获取单个失败")
 
 
 )
