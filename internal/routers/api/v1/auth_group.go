@@ -6,6 +6,7 @@ import (
 	"layuiAdminstd/global"
 	"layuiAdminstd/internal/service"
 	"layuiAdminstd/pkg/app"
+	"layuiAdminstd/pkg/convert"
 	"layuiAdminstd/pkg/errcode"
 )
 
@@ -40,11 +41,17 @@ func (a AuthGroup) Create (c *gin.Context) {
 	param := service.CreateAuthGroupRequest{}
 	response := app.NewResponse(c)
 	//  c.Request
-	fmt.Println( response.Ctx.Param("module"))
-	fmt.Println( "========4==============")
+	vaild, errs := app.BindAndValid(c, &param)
+	if !vaild {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
 	svc := service.New(c.Request.Context())
 	err := svc.CreateAuthGroup(&param)
 	if err != nil {
+		global.Logger.Errorf("svc.createAuthGroup err %v", err)
+		response.ToErrorResponse(errcode.ErrorCreateAuthGroupFail)
 		return
 	}
 
@@ -52,6 +59,31 @@ func (a AuthGroup) Create (c *gin.Context) {
 		"code" : 0,
 		"message": "成功",
 		"data": param.Module,
+	})
+	return
+}
+
+func (a AuthGroup) Update (c *gin.Context) {
+	param := service.UpdateAuthGroupRequest{ID:convert.StrTo(c.Param("id")).MustUInt32()}
+	response := app.NewResponse(c)
+	valid, errs := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf("app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	svc := service.New(c.Request.Context())
+	err := svc.UpdateAuthGroup(&param)
+	if err != nil {
+		global.Logger.Errorf(" svc.UpdateAuthor err: %v", err)
+		response.ToErrorResponse(errcode.ErrorUpdateAuthGroupRequestFaill)
+		return
+	}
+
+	response.ToResponse(gin.H{
+		"code" : 0,
+		"message": "成功",
 	})
 	return
 }

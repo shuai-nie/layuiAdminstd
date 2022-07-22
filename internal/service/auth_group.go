@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-	"layuiAdminstd/internal/dao"
 	"layuiAdminstd/pkg/app"
 )
 
@@ -15,6 +13,16 @@ type AuthGroupListRequest struct {
 }
 
 type CreateAuthGroupRequest struct {
+	Module      string `form:"module"`
+	Type        uint8  `form:"type"`
+	Title       string `form:"title"`
+	Description string `form:"description"`
+	Status      uint32 `form:"status"`
+	Rules       string `form:"rules"`
+}
+
+type UpdateAuthGroupRequest struct {
+	ID          uint32 `form:"id" binding:"required,gte=1"`
 	Module      string `form:"module"`
 	Type        uint8  `form:"type"`
 	Title       string `form:"title"`
@@ -53,20 +61,14 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 }
 
 func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
-	fmt.Println( param.Module)
-	fmt.Println("==========3==========")
-	fmt.Println( svc)
-	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
-		Module: param.Module,
-		Type: param.Type,
-		Title: param.Title,
-		Description: param.Description,
-		Status: param.Status,
-		Rules: param.Rules,
-	})
+	_, err := svc.dao.CreateAuthGroup(1,"2","3","4")
 
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (svc *Service) UpdateAuthGroup (param *UpdateAuthGroupRequest) error {
+	return svc.dao.UpdateAuthGroup(1, 1, "", "", "")
 }

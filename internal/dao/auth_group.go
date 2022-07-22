@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"fmt"
 	"layuiAdminstd/internal/model"
 	"layuiAdminstd/pkg/app"
 )
@@ -16,25 +15,23 @@ type AuthGroup struct {
 	Rules string
 }
 
-func (d *Dao) CreateAuthGroup(param *AuthGroup) (*model.AuthGroup, error) {
+func (d *Dao) CreateAuthGroup(types int8, module, title, desciption string) (*model.AuthGroup, error) {
 
 	admin := model.AuthGroup{
-		Module: param.Module,
-		Type: param.Type,
-		Title: param.Title,
-		Description: param.Description,
+		Module: module,
+		Title: title,
+		Description: desciption,
 	}
-	fmt.Println("+++++++++++++++++++++++")
-	fmt.Println(param.Module)
-	fmt.Println("+++++++++++++++++++++++")
-
 	return admin.Create(d.engine)
 }
 
-func (d *Dao) UpdateAuthGroup(param *AuthGroup) error {
-	admin := model.AuthGroup{Model:&model.Model{ID: param.ID}}
+func (d *Dao) UpdateAuthGroup(id uint32, types int8, module, title, description string) error {
+	admin := model.AuthGroup{Model:&model.Model{ID: id}}
 	values := map[string]interface{}{
-		// 数据格式
+		"Module": module,
+		"Type": types,
+		"Title": title,
+		"Description": description,
 	}
 	return admin.Update(d.engine, values)
 }
