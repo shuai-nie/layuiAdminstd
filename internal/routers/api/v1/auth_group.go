@@ -64,8 +64,9 @@ func (a AuthGroup) Create (c *gin.Context) {
 }
 
 func (a AuthGroup) Update (c *gin.Context) {
-	param := service.UpdateAuthGroupRequest{ID:convert.StrTo(c.Param("id")).MustUInt32()}
 	response := app.NewResponse(c)
+	param := service.UpdateAuthGroupRequest{ID:convert.StrTo(c.Param("id")).MustUInt32()}
+
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
 		global.Logger.Errorf("app.BindAndValid errs: %v", errs)

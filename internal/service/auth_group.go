@@ -1,6 +1,7 @@
 package service
 
 import (
+	"layuiAdminstd/internal/dao"
 	"layuiAdminstd/pkg/app"
 )
 
@@ -61,7 +62,14 @@ func (svc *Service) GetAuthGroupList(param *AuthGroupListRequest, pager *app.Pag
 }
 
 func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
-	_, err := svc.dao.CreateAuthGroup(1,"2","3","4")
+	_, err := svc.dao.CreateAuthGroup(&dao.AuthGroup{
+		Module: param.Module,
+		Type: param.Type,
+		Title: param.Title,
+		Description: param.Description,
+		Status: param.Status,
+		Rules: param.Rules,
+	})
 
 	if err != nil {
 		return err
@@ -70,5 +78,13 @@ func (svc *Service) CreateAuthGroup (param *CreateAuthGroupRequest) error {
 }
 
 func (svc *Service) UpdateAuthGroup (param *UpdateAuthGroupRequest) error {
-	return svc.dao.UpdateAuthGroup(1, 1, "", "", "")
+	err := svc.dao.UpdateAuthGroup(&dao.AuthGroup{
+		ID: param.ID,
+		Title: param.Title,
+	})
+
+	if err != nil {
+		return err
+	}
+	return nil
 }

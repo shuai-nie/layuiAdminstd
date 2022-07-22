@@ -15,23 +15,23 @@ type AuthGroup struct {
 	Rules string
 }
 
-func (d *Dao) CreateAuthGroup(types int8, module, title, desciption string) (*model.AuthGroup, error) {
+func (d *Dao) CreateAuthGroup(param *AuthGroup) (*model.AuthGroup, error) {
 
 	admin := model.AuthGroup{
-		Module: module,
-		Title: title,
-		Description: desciption,
+		Module: param.Module,
+		Type: param.Type,
+		Title: param.Title,
+		Description: param.Description,
 	}
+
 	return admin.Create(d.engine)
 }
 
-func (d *Dao) UpdateAuthGroup(id uint32, types int8, module, title, description string) error {
-	admin := model.AuthGroup{Model:&model.Model{ID: id}}
+func (d *Dao) UpdateAuthGroup(param *AuthGroup) error {
+	admin := model.AuthGroup{Model:&model.Model{ID: param.ID}}
 	values := map[string]interface{}{
-		"Module": module,
-		"Type": types,
-		"Title": title,
-		"Description": description,
+		"title": param.Title,
+		"description": param.Description,
 	}
 	return admin.Update(d.engine, values)
 }
