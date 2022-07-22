@@ -1,10 +1,12 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
+
 
 type AuthGroup struct {
 	*Model
-	Id uint16
 	Module string
 	Type uint8
 	Title string
@@ -59,7 +61,7 @@ func (a AuthGroup) List(db *gorm.DB, pageOffset, pageSize int) ([]*AuthGroup, er
 }
 
 func (a AuthGroup) Delete(db *gorm.DB) error {
-	return db.Where("id = ? ", a.Model.ID).Update("status=0").Error
+	return db.Where("id = ? ", a.ID).Update("status=0").Error
 }
 
 

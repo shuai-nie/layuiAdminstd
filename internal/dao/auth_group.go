@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"fmt"
 	"layuiAdminstd/internal/model"
 	"layuiAdminstd/pkg/app"
 )
@@ -16,12 +17,17 @@ type AuthGroup struct {
 }
 
 func (d *Dao) CreateAuthGroup(param *AuthGroup) (*model.AuthGroup, error) {
+
 	admin := model.AuthGroup{
 		Module: param.Module,
 		Type: param.Type,
 		Title: param.Title,
 		Description: param.Description,
 	}
+	fmt.Println("+++++++++++++++++++++++")
+	fmt.Println(param.Module)
+	fmt.Println("+++++++++++++++++++++++")
+
 	return admin.Create(d.engine)
 }
 
