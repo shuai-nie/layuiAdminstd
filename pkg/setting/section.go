@@ -30,6 +30,12 @@ type ServerSettings struct {
 }
 
 type AppSettings struct {
+	DefaultPageSize int
+	MaxPageSize int
+	DefaultContextTimeout time.Duration
+	LogSavePath string
+	LogFileName string
+	LogFileExt string
 	UploadSavePath string
 	UploadServerUrl string
 	UploadImageMaxSize int

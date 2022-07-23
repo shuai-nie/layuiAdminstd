@@ -5,6 +5,13 @@ import (
 	"layuiAdminstd/pkg/app"
 )
 
+type AuthGroupRequest struct {
+	Id          uint32 `form:"id"`
+	Status      uint8  `form:"status"`
+}
+
+
+
 type AuthGroupListRequest struct {
 	Module string
 	Type uint8
@@ -32,16 +39,11 @@ type UpdateAuthGroupRequest struct {
 	Rules       string `form:"rules"`
 }
 
-type AuthGroup struct {
-	Id          uint32 `form:"id"`
-	Module      string `form:"module"`
-	Type        uint8  `form:"type"`
-	Title       string `form:"title"`
-	Description string `form:"description"`
-	Status      uint8  `form:"status"`
+type DeleteAuthGroupRequest struct {
+	ID uint32 `form:"id" binding:"required,gte=1"`
 }
 
-type AuthGroupRequest struct {
+type AuthGroup struct {
 	Id          uint32 `form:"id"`
 	Module      string `form:"module"`
 	Type        uint8  `form:"type"`

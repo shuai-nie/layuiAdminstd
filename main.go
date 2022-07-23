@@ -1,9 +1,11 @@
 package main
 
 import (
+	"gopkg.in/natefinch/lumberjack.v2"
 	"layuiAdminstd/global"
 	"layuiAdminstd/internal/model"
 	"layuiAdminstd/internal/routers"
+	"layuiAdminstd/pkg/logger"
 	"layuiAdminstd/pkg/setting"
 	"log"
 	"net/http"
@@ -16,6 +18,11 @@ func init(){
 	err := setupSetting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err %v", err)
+	}
+
+	err = setupLogger()
+	if err != nil {
+		log.Fatalf("init.setupLogger err: %v", err)
 	}
 
 	err = setupDBEngine()
@@ -67,6 +74,18 @@ func setupSetting() error {
 
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriterTimeout *= time.Second
+
+	return nil
+}
+
+func setupLogger() error {
+	fileName := global.AppSetting.LogSavePath  + global.AppSetting.LogFileName + global.AppSetting.LogFileExt
+	global.Logger = logger.NewLogger(&lumberjack.Logger{
+		Filename: fileName,
+		MaxSize: 500,
+		MaxAge: 10,
+		LocalTime: true,
+	}, "", log.LstdFlags).WithCaller(2)
 
 	return nil
 }

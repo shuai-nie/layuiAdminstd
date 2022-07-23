@@ -94,7 +94,6 @@ func (a AuthGroup) Update (c *gin.Context) {
 	}
 
 	svc := service.New(c.Request.Context())
-	fmt.Println("111111111111111111111111111")
 	err := svc.UpdateAuthGroup(&param)
 	if err != nil {
 		global.Logger.Errorf(" svc.UpdateAuthor err: %v", err)
