@@ -55,7 +55,7 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettings) (*gorm.DB, error) {
 毕竟，一个钩子的事，就没有必要自己手写过多不必要的代码了
 （注意，增加了软删除后，先前的代码需要增加 deleted_on 的判断）
  */
-// 注册回调，
+// 新增回调
 func updateTimeStampForCreateCallback(scope *gorm.Scope) {
 	if !scope.HasError() {
 		newTime := time.Now().Unix()
@@ -72,13 +72,13 @@ func updateTimeStampForCreateCallback(scope *gorm.Scope) {
 		}
 	}
 }
-
+// 更新回调
 func updateTimeStampForUpdateCallback(scope *gorm.Scope ) {
 	if _, ok := scope.Get("gorm:update_column"); !ok {
 		_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
 	}
 }
-
+// 删除回调
 func deleteCallback(scope *gorm.Scope) {
 	if !scope.HasError() {
 		var extraOption string
