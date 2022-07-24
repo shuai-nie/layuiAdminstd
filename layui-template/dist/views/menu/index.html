@@ -39,15 +39,14 @@ layui.config({
 }).extend({
     tableEdit: 'lib/extend/tableEdit'
     , tableTree: 'lib/extend/tableTree'
-}).use(['admin', 'table', 'util', 'tableTree', 'tableEdit'], function() {
+}).use(['admin', 'table', 'util', 'tableTree'], function() {
     var $ = layui.$
-        , tableEdit = layui.tableEdit
         , tableTree = layui.tableTree
         , admin = layui.admin
         , table = layui.table
         , element = layui.element;
 
-    tableTree.render({
+    var treeTable = tableTree.render({
         elem: '#tableId'
         ,id:'tableTree'
         ,url:'json/tableTree.json'
@@ -64,7 +63,7 @@ layui.config({
             showField:'treeName' //表格树显示的字段
             ,treeid:'id' //treeid所对应字段的值在表格数据中必须是唯一的，且不能为空。
             ,treepid:'pid'//父级id字段名称
-            ,iconClass:'layui-icon-right' //小图标class样式 窗口图标 layui-icon-layer
+            ,iconClass:'layui-icon-layer' //小图标class样式 窗口图标 layui-icon-layer
             ,showToolbar: true //展示工具栏 false不展示 true展示
         }
         ,cols: [[
@@ -82,19 +81,28 @@ layui.config({
         }
     });
 
-    // 监听表格树event tool事件
+    /**
+     *表格的增删改都会回调此方法
+     * 与table.on(tool(lay-filter))用法一致。
+     **/
     tableTree.on('tool(tableEvent)',function (obj) {
         var field = obj.field; //单元格字段
         var value = obj.value; //修改后的值
         var data = obj.data; //当前行数据
-        var event = obj.event; //当前单元格事件
-        if(event === 'update'){
-            obj.update(value); //数据更新
+        var event = obj.event; //当前单元格事件属性值
+        //event为del为删除 add则新增 edit则修改 async则为异步请求数据。
+        //这个三个值固定死了，切莫定义与之三个重复的event。
+        if(event !== 'del' && event !== 'add' && event !== 'type' && event !== 'async'){
+            var update = {};
+            update[field] = value;
+            obj.update(update);
+            console.log(obj)
         }
-
-        //event为del为删除 add则新增 async则异步请求数据
+        if(event === 'type'){
+            obj.update({type:value.value});
+        }
         if(event === 'del'){
-            obj.del(); //删除节点及其子节点
+            obj.del();
         }
         if(event === 'add'){ //点击操作栏加号图标时触发
             //异步、同步都可以使用
@@ -104,156 +112,124 @@ layui.config({
         if(event === 'async'){ //点击方向箭头小图标时触发
             //可ajax异步请求后台数据,回调obj.async(arr)生成表格树,arr参数为数组
             //数组中元素的treeid字段值重复则被过滤掉
-            obj.async([{"id":'abc',"treeName":'abc',"permissionId ":'abc',"sort":'3333',createDate:'2020-02-02',type:'1'}]);
+            //obj.async([{"id":'abc',"treeName":'abc',"permissionId ":'abc',"sort":'3333',createDate:'2020-02-02',type:'1'}]);
+            //console.log(data.id)
+            treeTable.openTreeNode(data.id)
+        }
+        if(event === 'id'){
+            $(this).parents('tr').attr('tree-id',value);
         }
     });
 
-    // 监听树形表格复选框
+    /**
+     *监听复选框选中状态
+     **/
     tableTree.on('checkbox(tableEvent)', function(obj){
         console.log(obj.checked); //当前是否选中状态
         console.log(obj.data); //选中行的相关数据
         console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+        console.log(obj.data);
     });
-
-    // 监听树形表格工具条
+    var isAsc = true;
     table.on('toolbar(tableEvent)', function(obj){
-        treeTable.addTopTreeNode();         //新增最上级节点
-        treeTable.getCheckedTreeNodeData(); //获取选中行的树状数据
-        treeTable.getTableTreeData();       //获取表格树所有数据
-        treeTable.closeTreeNode('5');       //指定tr/节点id折叠节点
-        treeTable.openTreeNode(5);          //指定tr/节点id展开相对应树节点
-        treeTable.closeAllTreeNodes();      //折叠所有节点
-        treeTable.openAllTreeNodes();       //展开所有节点
-        treeTable.getTreeOptions();         //获取表格配置
-        treeTable.reload();                 //表格树reload
-        treeTable.delTreeNode('1');         //指定tr/节点id删除节点及相关叶子节点
-        treeTable.clearSearch();            //重置搜索前表格树折叠状态
-        treeTable.refresh(rs);              //传数据刷新、不传刷新当前表格树，但不重载。
-        treeTable.sortByTreeNode(5,'sort',false);  //指定节点/节点id和字段对其叶子节点逐级排序
+        var id = $(this).attr("id");
+        if(id==="btn1"){
+            //data可以为空，为空则创建空行，否则按照data数据生成行
+            treeTable.addTopTreeNode();//新增最上级节点
+        }else if(id === 'btn2') {
+            console.log(treeTable.getCheckedTreeNodeData()) //获取选中行的树状数据
+        }else if(id === 'btn3') {
+            console.log(treeTable.getTableTreeData())//获取表格树所有数据
+        }else if(id === 'btn4') {
+            treeTable.closeTreeNode('6'); // 根据tr或者树id关闭相对应树节点
+        }else if(id === 'btn5') {
+            treeTable.openTreeNode(6); // 根据tr或者树id展开相对应树节点
+        }else if(id === 'btn6') {
+            treeTable.closeAllTreeNodes();  //关闭所有树节点
+        }else if(id === 'btn7') {
+            treeTable.openAllTreeNodes(); //展开所有树节点
+        }else if(id === 'btn8') {
+            console.log(treeTable.getTreeOptions()); //获取表格配置
+        }else if(id === 'btn9'){
+            treeTable.reload(); //表格树进行reload
+        }else if(id === 'btn10') {
+            treeTable.delTreeNode('19'); //根据tr元素或者节点id删除节点及相关叶子节点
+        }else if(id === 'btn11') {
+            treeTable.clearSearch(); //重置搜索
+        }else if(id === 'btn12') {
+            //传了数据进去进行刷新，那么会把原来的数据给删除了，
+            //然后把传进去的数据进行更新进去
+            treeTable.refresh();
+        }else if(id === "btn13"){
+            treeTable.sortByTreeNode(28,'sort',isAsc); //指定节点或节点id排序
+            isAsc = !isAsc;
+        }
     });
 
-    // 监听树形表格排序
+    /**
+     * 整个表格树排序，与layui进行了整合。
+     */
     table.on('sort(tableEvent)', function(obj){
-        treeTable.sort({field:obj.field,desc:obj.type === 'desc'}) //整个表格树节点及其叶子逐级排序
+        treeTable.sort({field:obj.field,desc:obj.type === 'desc'})
     });
 
 
+    // // 监听表格树event tool事件
+    // tableTree.on('tool(tableEvent)',function (obj) {
+    //     var field = obj.field; //单元格字段
+    //     var value = obj.value; //修改后的值
+    //     var data = obj.data; //当前行数据
+    //     var event = obj.event; //当前单元格事件
+    //     if(event === 'update'){
+    //         obj.update(value); //数据更新
+    //     }
+    //
+    //     //event为del为删除 add则新增 async则异步请求数据
+    //     if(event === 'del'){
+    //         obj.del(); //删除节点及其子节点
+    //     }
+    //     if(event === 'add'){ //点击操作栏加号图标时触发
+    //         //异步、同步都可以使用
+    //         //obj.add(arr)生成表格树,arr参数为数组，数组中元素的treeid字段值重复则被过滤掉
+    //         obj.add([]) //参数不传或为空数组时 => 新增空行
+    //     }
+    //     if(event === 'async'){ //点击方向箭头小图标时触发
+    //         //可ajax异步请求后台数据,回调obj.async(arr)生成表格树,arr参数为数组
+    //         //数组中元素的treeid字段值重复则被过滤掉
+    //         obj.async([{"id":'abc',"treeName":'abc',"permissionId ":'abc',"sort":'3333',createDate:'2020-02-02',type:'1'}]);
+    //     }
+    // });
+    //
+    // // 监听树形表格复选框
+    // tableTree.on('checkbox(tableEvent)', function(obj){
+    //     console.log(obj.checked); //当前是否选中状态
+    //     console.log(obj.data); //选中行的相关数据
+    //     console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+    // });
+    //
+    // // 监听树形表格工具条
+    // table.on('toolbar(tableEvent)', function(obj){
+    //     console.log('ssssssssss');
+    //     // treeTable.addTopTreeNode();         //新增最上级节点
+    //     // treeTable.getCheckedTreeNodeData(); //获取选中行的树状数据
+    //     // treeTable.getTableTreeData();       //获取表格树所有数据
+    //     // treeTable.closeTreeNode('5');       //指定tr/节点id折叠节点
+    //     // treeTable.openTreeNode(5);          //指定tr/节点id展开相对应树节点
+    //     // treeTable.closeAllTreeNodes();      //折叠所有节点
+    //     // treeTable.openAllTreeNodes();       //展开所有节点
+    //     // treeTable.getTreeOptions();         //获取表格配置
+    //     // treeTable.reload();                 //表格树reload
+    //     // treeTable.delTreeNode('1');         //指定tr/节点id删除节点及相关叶子节点
+    //     // treeTable.clearSearch();            //重置搜索前表格树折叠状态
+    //     // treeTable.refresh(rs);              //传数据刷新、不传刷新当前表格树，但不重载。
+    //     // treeTable.sortByTreeNode(5,'sort',false);  //指定节点/节点id和字段对其叶子节点逐级排序
+    // });
+    //
+    // // 监听树形表格排序
+    // table.on('sort(tableEvent)', function(obj){
+    //     treeTable.sort({field:obj.field,desc:obj.type === 'desc'}) //整个表格树节点及其叶子逐级排序
+    // });
 
-
-        var DISABLED = 'layui-btn-disabled'
-        //区分各选项卡中的表格
-        ,tabs = {
-            all: {
-                text: '全部消息'
-                ,id: 'LAY-app-message-all'
-            }
-            ,notice: {
-                text: '通知'
-                ,id: 'LAY-app-message-notice'
-            }
-            ,direct: {
-                text: '私信'
-                ,id: 'LAY-app-message-direct'
-            }
-        };
-
-    //标题内容模板
-    var tplTitle = function(d){
-        return '<a lay-href="app/message/detail/id='+ d.id +'">'+ d.title;
-    };
-
-    //全部消息
-    table.render({
-        elem: '#LAY-app-message-all'
-        ,url: '/api/v1/menu/index' //模拟接口
-        ,page: true
-        ,cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            ,{field: 'Module', title: '模块', width: 100}
-            ,{field: 'Type', title: '类型', width: 100}
-            ,{field: 'Title', title: '标题内容', width: 100}
-            ,{field: 'Description', title: '描述', width: 120}
-            ,{fixed: 'right', title: '操作', width: 150, align:'center', toolbar: '#barDemo'}
-        ]]
-        // ,skin: 'line'
-    });
-
-    //通知
-    table.render({
-        elem: '#LAY-app-message-notice'
-        ,url: './json/message/notice.js' //模拟接口
-        ,page: true
-        ,cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            ,{field: 'title', title: '标题内容', minWidth: 300, templet: tplTitle}
-            ,{field: 'time', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.time) }}</div>'}
-        ]]
-        ,skin: 'line'
-    });
-
-    //私信
-    table.render({
-        elem: '#LAY-app-message-direct'
-        ,url: './json/message/direct.js' //模拟接口
-        ,page: true
-        ,cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            ,{field: 'title', title: '标题内容', minWidth: 300, templet: tplTitle}
-            ,{field: 'time', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.time) }}</div>'}
-        ]]
-        ,skin: 'line'
-    });
-
-    //事件处理
-    var events = {
-        del: function(othis, type){
-            var thisTabs = tabs[type]
-                ,checkStatus = table.checkStatus(thisTabs.id)
-                ,data = checkStatus.data; //获得选中的数据
-            if(data.length === 0) return layer.msg('未选中行');
-
-            layer.confirm('确定删除选中的数据吗？', function(){
-                /*
-                admin.req('url', {}, function(){ //请求接口
-                  //do somethin
-                });
-                */
-                //此处只是演示，实际应用需把下述代码放入上述Ajax回调中
-                layer.msg('删除成功', {
-                    icon: 1
-                });
-                table.reload(thisTabs.id); //刷新表格
-            });
-        }
-        ,ready: function(othis, type){
-            var thisTabs = tabs[type]
-                ,checkStatus = table.checkStatus(thisTabs.id)
-                ,data = checkStatus.data; //获得选中的数据
-            if(data.length === 0) return layer.msg('未选中行');
-
-            //此处只是演示
-            layer.msg('标记已读成功', {
-                icon: 1
-            });
-            table.reload(thisTabs.id); //刷新表格
-        }
-        ,readyAll: function(othis, type){
-            var thisTabs = tabs[type];
-
-            //do somethin
-
-            layer.msg(thisTabs.text + '：全部已读', {
-                icon: 1
-            });
-        }
-    };
-
-    $('.LAY-app-message-btns .layui-btn').on('click', function(){
-        var othis = $(this)
-            ,thisEvent = othis.data('events')
-            ,type = othis.data('type');
-        events[thisEvent] && events[thisEvent].call(this, othis, type);
-    });
 
 });
 </script>

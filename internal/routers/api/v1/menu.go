@@ -26,7 +26,7 @@ func (a Menu) Get(c *gin.Context) {
 	}
 
 	svc := service.New(c.Request.Context())
-	auth, err := svc.GetAuthGroup(&param)
+	auth, err := svc.GetMenu(&param)
 	if err != nil {
 		global.Logger.Errorf("svc.GetAuthGroup err: %v", err)
 		response.ToErrorResponse(errcode.ErrorGetAuthGroupRequestFail)
