@@ -7,7 +7,7 @@ type Menu struct {
 }
 
 func (a Menu) TableName() string {
-	return "jm_auth_group"
+	return "jm_auth_rule"
 }
 
 func (a Menu) Get(db *gorm.DB) (Menu, error) {
