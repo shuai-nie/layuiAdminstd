@@ -1,6 +1,7 @@
 package main
 
 import (
+	// lumberjack用于记录日志，但是它可以控制每个日志文件的大小，以及可以按规则删除历史的日志文件，甚至可以对历史的日志文件进行压缩.
 	"gopkg.in/natefinch/lumberjack.v2"
 	"layuiAdminstd/global"
 	"layuiAdminstd/internal/model"

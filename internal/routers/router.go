@@ -21,6 +21,7 @@ func NewRouter() *gin.Engine {
 
 	admin := v1.NewAdmin()
 	AuthGroup := v1.NewAuthGroup()
+	menu := v1.NewMenu()
 	upload := api.NewUpload()
 
 	// 上传文件 url
@@ -43,6 +44,9 @@ func NewRouter() *gin.Engine {
 		apiv1.POST("/auth/group/create", AuthGroup.Create)
 		apiv1.GET("/auth/group/:id", AuthGroup.Get)
 		apiv1.PUT("/auth/group", AuthGroup.Update)
+
+		apiv1.GET("/menu/index", menu.List)
+
 
 /*		apiv1.POST("/tags")
 		apiv1.DELETE("/tags/:id")

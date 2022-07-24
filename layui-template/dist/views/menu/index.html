@@ -4,7 +4,7 @@
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
-        <a><cite>用户组</cite></a>
+        <a><cite>节点列表</cite></a>
     </div>
 </div>
 
@@ -12,7 +12,7 @@
     <div class="layui-card">
         <div class="layui-tab layui-tab-brief">
             <ul class="layui-tab-title">
-                <li class="layui-this">全部消息</li>
+                <li class="layui-this">节点列表</li>
                 <!--<li>通知<span class="layui-badge">6</span></li>
                 <li>私信</li>-->
             </ul>
@@ -73,7 +73,7 @@
         //全部消息
         table.render({
             elem: '#LAY-app-message-all'
-            ,url: '/api/v1/auth/group' //模拟接口
+            ,url: '/api/v1/menu/index' //模拟接口
             ,page: true
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
@@ -86,7 +86,7 @@
             // ,skin: 'line'
         });
 
-        //通知
+        /*//通知
         table.render({
             elem: '#LAY-app-message-notice'
             ,url: './json/message/notice.js' //模拟接口
@@ -97,7 +97,7 @@
                 ,{field: 'time', title: '时间', width: 170, templet: '<div>{{ layui.util.timeAgo(d.time) }}</div>'}
             ]]
             ,skin: 'line'
-        });
+        });*/
 
         //私信
         table.render({
