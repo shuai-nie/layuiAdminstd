@@ -1,4 +1,4 @@
-# layuiAdminstd
++# layuiAdminstd
 layuiAdminstd-status-template
 
 ```
@@ -316,7 +316,7 @@ func setup() {
 ————configs：配置文件
 ————global：全忽悠变量
 ————internal：内部模块
-	————dao：数据访问层
+	————dao：数据访问层(Database Access Object) 所有数据相关的操作都会在dao层进行，例如MySql，Elasticsearch
 	————middleware：http中间件
 	————model：模型层，用于存放 model 对象
 	————routers：路由相关的逻辑
@@ -324,4 +324,5 @@ func setup() {
 ————pkg：项目相关模块包
 ————storage：项目生成的临时文件
 ————scripts：各类构建、安装、分析等操作的脚本
+————third_party：第三方的资源工具，如Swagger Ui
 ````
